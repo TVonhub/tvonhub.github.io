@@ -32,7 +32,7 @@
 
 ---
 
-M3u : https://powershell-lv2.github.io/tv.m3u
+M3U : https://powershell-lv2.github.io/tv.m3u
 
 ## 💬 ติดต่อเรา
 
