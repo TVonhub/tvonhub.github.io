@@ -32,13 +32,7 @@
 
 ---
 
-## 📷 ตัวอย่างหน้าจอ
-
-| หน้าเมนูหลัก | ผังรายการ (EPG) | ช่องกีฬา |
-|---------------|-----------------|-----------|
-| ![Main]([https://via.placeholder.com/300x200](https://powershell-lv2.github.io/tv.m3u)) | ![EPG](https://via.placeholder.com/300x200) | ![Sports](https://via.placeholder.com/300x200) |
-
----
+M3u : https://powershell-lv2.github.io/tv.m3u
 
 ## 💬 ติดต่อเรา
 
