@@ -381,7 +381,7 @@ http://symc-cdn.violin.co.th:1935/tndedge/whitechannel/chunklist.m3u8
 #EXTINF:-1 tvg-id="WorkpointTV.th" tvg-logo="https://i.imgur.com/zq6Xshf.png" group-title="Undefined",Workpoint TV
 https://lb1-live-mv.v2h-cdn.com/hls/ffcb/workpoint/workpoint.m3u8
 #EXTINF:-1 tvg-id="ZabbChannel.th" tvg-logo="https://i.imgur.com/4TMtUjW.png" group-title="Undefined",Zabb Channel (720p)
-
+https://vdo.plathong.net/flash7057/flash7057/playlist.m3u8
 
 #EXTINF:-1 tvg-id="Animax.in" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/6/65/Animaxlogo-20160701.png" group-title="Animation",Animax [Geo-blocked]
 https://amg02159-kcglobal-amg02159c1-samsung-in-521.playouts.now.amagi.tv/playlist/amg02159-kcglobal-animax-samsungin/playlist.m3u8
@@ -414,7 +414,4 @@ https://cdn-live1.qvc.jp/iPhone/1501/1501.m3u8
 https://stream3.shopch.jp/HLS/master.m3u8
 #EXTINF:-1 tvg-id="Weathernews.jp" tvg-logo="https://i.imgur.com/A8uRSTS.png" group-title="Weather",Weathernews (720p)
 https://weather-live-hls01e.akamaized.net/ade36978-4ad3-48de-91ab-7d6edd0b6388/11ed8ed8ca.ism/manifest(format=m3u8-aapl-v3,audio-only=false).m3u8
-
-
-https://vdo.plathong.net/flash7057/flash7057/playlist.m3u8
 
