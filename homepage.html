@@ -1,1 +1,129 @@
 
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My IPTV Service</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#0ea5a4;--muted:#9aa4b2;--glass:rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071023 0%, #0b1220 100%);color:#e6eef6;line-height:1.5}
+    .container{max-width:1000px;margin:36px auto;padding:28px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:28px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    header{display:flex;gap:18px;align-items:center}
+    .logo{width:78px;height:78px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,#064e55,#0fb6b3);box-shadow:0 6px 18px rgba(15,182,179,0.18)}
+    h1{margin:0;font-size:22px}
+    p.lead{color:var(--muted);margin:8px 0 18px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+    @media (max-width:880px){.grid{grid-template-columns:1fr} .logo{width:64px;height:64px}}
+    .features{display:grid;gap:12px}
+    .feature{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(14,165,164,0.12);color:var(--accent);font-weight:600;margin-right:8px}
+    .device-list{display:flex;flex-wrap:wrap;gap:8px}
+    .device{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-size:14px}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;background:var(--accent);color:#042024}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#e6eef6}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .contact-list{display:flex;flex-direction:column;gap:8px}
+    code.m3u{display:block;padding:10px;border-radius:8px;background:rgba(0,0,0,0.25);color:#cbe7e6;font-family:monospace;overflow-wrap:anywhere}
+    .warning{background:linear-gradient(90deg, rgba(255,215,87,0.07), transparent);padding:10px;border-radius:8px;border:1px solid rgba(255,215,87,0.06);color:#ffd77a}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <header>
+        <div class="logo">📺</div>
+        <div>
+          <h1>My IPTV Service</h1>
+          <p class="lead">ยินดีต้อนรับสู่ My IPTV Service — บริการดูทีวีออนไลน์คุณภาพสูง ดูได้ทุกที่ทุกเวลา ไม่ว่าคุณจะอยู่บ้าน หรือกำลังเดินทาง ก็สามารถรับชมได้ผ่านอินเทอร์เน็ตเพียงคลิกเดียว</p>
+        </div>
+      </header>
+
+      <div class="grid">
+        <main>
+          <section style="margin-top:18px">
+            <h3>🌟 จุดเด่นของเรา</h3>
+            <div class="features">
+              <div class="feature">✅ <strong>ช่องเยอะ</strong> — ครบทุกหมวดหมู่: ข่าว, กีฬา, ภาพยนตร์, ซีรีส์, การ์ตูน และอีกมากมาย</div>
+              <div class="feature">✅ <strong>คุณภาพสูง</strong> — สตรีมคมชัดระดับ Full HD / 4K</div>
+              <div class="feature">✅ <strong>ใช้งานง่าย</strong> — รองรับทุกอุปกรณ์: Smart TV, มือถือ, คอมพิวเตอร์, กล่อง Android</div>
+              <div class="feature">✅ <strong>อัปเดตช่องอัตโนมัติ</strong> — ไม่ต้องเสียเวลาหาไฟล์ใหม่</div>
+              <div class="feature">✅ <strong>รองรับ EPG</strong> — แสดงผังรายการทีวีล่วงหน้า</div>
+            </div>
+
+            <section style="margin-top:18px">
+              <h3>🖥️ รองรับอุปกรณ์</h3>
+              <div class="device-list">
+                <div class="device">📱 มือถือ / แท็บเล็ต (iOS, Android)</div>
+                <div class="device">💻 คอมพิวเตอร์ (Windows, Mac)</div>
+                <div class="device">📺 Smart TV (Samsung, LG, Android TV)</div>
+                <div class="device">📦 กล่อง IPTV / Android Box</div>
+              </div>
+            </section>
+
+            <section style="margin-top:18px">
+              <h3>📦 วิธีใช้งาน</h3>
+              <ol class="small">
+                <li>ดาวน์โหลดแอป IPTV Player (เช่น IPTV Smarters, TiviMate, OTT Navigator, KODI)</li>
+                <li>กรอก ลิงก์ M3U / Xtream Codes ที่เราให้</li>
+                <li>เริ่มรับชมได้ทันที!</li>
+              </ol>
+
+              <p style="margin-top:10px"><strong>M3U :</strong></p>
+              <code class="m3u">https://powershell-lv2.github.io/tv.m3u</code>
+
+              <div class="actions">
+                <a class="btn" href="https://powershell-lv2.github.io/tv.m3u" target="_blank" rel="noopener">เปิดไฟล์ M3U</a>
+                <a class="btn ghost" href="https://powershell-lv2.github.io/" target="_blank" rel="noopener">ไปที่เว็บไซต์</a>
+              </div>
+            </section>
+
+            <section style="margin-top:18px">
+              <h3>💬 ติดต่อเรา</h3>
+              <div class="contact-list">
+                <div class="small">🌐 เว็บไซต์: <a href="https://powershell-lv2.github.io/" target="_blank" rel="noopener">powershell-lv2.github.io</a></div>
+                <div class="small">📧 อีเมล: <a href="mailto:chetbodins@gmail.com">chetbodins@gmail.com</a></div>
+                <div class="small">💬 Facebook: <a href="https://www.facebook.com/Mui21.93" target="_blank" rel="noopener">Mui21.93</a></div>
+              </div>
+            </section>
+
+            <section style="margin-top:18px">
+              <div class="warning">⚠️ คำเตือน: IPTV ของเราสำหรับการใช้งานส่วนบุคคลเท่านั้น ไม่สนับสนุนการละเมิดลิขสิทธิ์</div>
+            </section>
+
+          </section>
+        </main>
+
+        <aside>
+          <div style="position:sticky;top:28px">
+            <div style="background:rgba(255,255,255,0.02);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)">
+              <h4 style="margin:0 0 8px">สรุปด่วน</h4>
+              <p class="small" style="margin:0 0 10px">ดูทีวีออนไลน์คุณภาพสูง รองรับหลายอุปกรณ์ มี M3U ให้พร้อม และรองรับ EPG</p>
+              <div style="display:flex;gap:8px">
+                <a class="btn" href="https://powershell-lv2.github.io/tv.m3u" target="_blank" rel="noopener">ดาวน์โหลด M3U</a>
+                <a class="btn ghost" href="mailto:chetbodins@gmail.com">ส่งอีเมล</a>
+              </div>
+            </div>
+
+            <div style="margin-top:14px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:10px;border:1px solid rgba(255,255,255,0.02)">
+              <h5 style="margin:0 0 8px">คำถามที่พบบ่อย</h5>
+              <p class="small" style="margin:0">Q: ต้องใช้บัญชีพิเศษไหม?<br>A: ไม่ต้อง — เพียงใส่ลิงก์ M3U ในแอป player ที่รองรับ</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="small">© My IPTV Service • ภาพรวมบริการ</div>
+          <div class="small">ออกแบบโดย chetbodins • ติดต่อ: chetbodins@gmail.com</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
