@@ -414,6 +414,6 @@ https://cdn-live1.qvc.jp/iPhone/1501/1501.m3u8
 https://stream3.shopch.jp/HLS/master.m3u8
 #EXTINF:-1 tvg-id="Weathernews.jp" tvg-logo="https://i.imgur.com/A8uRSTS.png" group-title="Weather",Weathernews (720p)
 https://weather-live-hls01e.akamaized.net/ade36978-4ad3-48de-91ab-7d6edd0b6388/11ed8ed8ca.ism/manifest(format=m3u8-aapl-v3,audio-only=false).m3u8
-
-#EXTINF:-1 tvg-id="bloomberg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/New_Bloomberg_Logo.svg/640px-New_Bloomberg_Logo.svg.png" group-title="bloomberg (1080p)
+#EXTINF:-1 tvg-id="Bloomberg" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/New_Bloomberg_Logo.svg/640px-New_Bloomberg_Logo.svg.png" group-title="News",Bloomberg (1080p)
 https://dai.google.com/linear/hls/pb/event/BVlOmFGaTi6NpchccR14yA/stream/f018f3e1-6ebd-4e0f-92e4-5c6de20e14a6:TPE/variant/dd0a1227701dfa2d888d4bd736db2793/bandwidth/3000000.m3u8
+
