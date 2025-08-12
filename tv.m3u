@@ -13929,3 +13929,112 @@ http://tvzvezda.bonus-tv.ru/cdn/zvezdaplus/playlist.m3u8
 https://cdne.folxplay.tv/folx-trz/streams/ch-2/master.m3u8
 #EXTINF:-1 tvg-id="ZZTV.rs" tvg-logo="https://i.imgur.com/9dz8MsD.png" group-title="Music",Muzzik ZZ TV (720p)
 https://muzzik-live.morescreens.com/mts-a4/playlist.m3u8
+#EXTINF:0 tvg-name="1FM Music From The 1960s thru Today!" tvg-language="English" tvg-country="UK" tvg-id="1FM - Music From The 1960s - Today!" tvg-logo="http://merrim01.moonfruit.com/communities/8/004/013/094/758//images/4620347830_132x169.png" group-title="Radio",1FM Music From The 1960s thru Today! (Radio) (UK) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk2.internet-radio.com:8008/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="1HD" tvg-language="Spanish" tvg-country="US" tvg-id="1HD" tvg-logo="http://www.tv14.net/wp-content/uploads/2013/09/1HD-logo.jpg" group-title="Music",1HD (Music) (US) (Spanish)
+http://spb1.peers.tv/streaming/firstmuz/16/hd/playlist.m3u8
+#EXTINF:0 tvg-name="7S MUSIC" tvg-language="Tamil" tvg-country="IN" tvg-id="7S MUSIC" tvg-logo="http://logowow.net/logos/thumb-EoUSpsEtX.png" group-title="Music",7S MUSIC (Music) (IN) (Tamil)
+http://edgecast7smusic.purplestream.in/7smusicorg/ngrp:7smusic_all/playlist.m3u8
+#EXTINF:0 tvg-name="A One Hip Hop" tvg-language="Russian" tvg-country="RU" tvg-id="A One Hip Hop" tvg-logo="http://i.imgur.com/yX8CKx3.png" group-title="Music",A One Hip Hop (Music) (RU) (Russian)
+http://spb1.peers.tv/streaming/aone/16/tvrec/playlist.m3u8
+#EXTINF:0 tvg-name="ABN" tvg-language="Telugu" tvg-country="IN" tvg-id="ABN" tvg-logo="http://www.andhrawishesh.com/Resources/images/TV-Channels/ABN-Andhrajyothi.jpg" group-title="News",ABN (News) (IN) (Telugu)
+https://www.youtube.com/watch?v=QzQnFY6CioA.m3u8
+#EXTINF:0 tvg-name="AKA Hip Hop" tvg-language="English" tvg-country="US" tvg-id="AKA Hip Hop" tvg-logo="https://pbs.twimg.com/profile_images/570583259268935680/HLC45Kid.jpeg" group-title="Music",AKA Hip Hop (Music) (US) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=akanew&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="Al Hayat 2" tvg-language="Arabic" tvg-country="EG" tvg-id="Al Hayat 2" tvg-logo="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c156.1.558.558/s160x160/1069180_167849346754534_1513691148_n.png?oh=c9ea1c8e042ae825d3eb7f47143bf416&oe=56915E47&__gda__=1452240975_1f8b5a1bdd14c8d8ceb63719dc4bd206" group-title="Lifestyle",Al Hayat 2 (Lifestyle) (EG) (Arabic)
+http://media.islamexplained.com:1935/live/ngrp:ahusa.stream_all/BratuMarian.m3u8
+#EXTINF:0 tvg-name="Al Quran" tvg-language="Arabic" tvg-country="SA" tvg-id="Al Quran" tvg-logo="http://livetvscreen.com/wp-content/uploads/2012/07/Al-Quran-TV-Saudi-Arabia.jpg" group-title="Lifestyle",Al Quran (Lifestyle) (SA) (Arabic)
+http://46.245.160.224/mekke/mekke/chunklist_w581447799.m3u8
+#EXTINF:0 tvg-name="Al Sharqiya" tvg-language="Arabic" tvg-country="IQ" tvg-id="Al Sharqiya" tvg-logo="http://www.alsharqiyatv.com/images/png-3.png" group-title="News",Al Sharqiya (News) (IQ) (Arabic)
+http://ns8.indexforce.com:1935/home/mystream/playlist.m3u8
+#EXTINF:0 tvg-name="Astro Ceria" tvg-language="Malayalam" tvg-country="MY" tvg-id="Astro Ceria" tvg-logo="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRQ6x2T60OkeVbR151p_5BEDUHJePSD4V6aBAwRUc1yhVOJpN8uXwbqcRQ" group-title="Family",Astro Ceria (Family) (MY) (Malayalam)
+http://www.layarku.tv/media/ceria.m3u8
+#EXTINF:0 tvg-name="Astro Ria" tvg-language="Indonesian" tvg-country="MY" tvg-id="Astro Ria" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvfuwhGPisRv0g4q5EPt1SZ0reeqkwzOufzErSj9tPXgo3njGjPRzhsg" group-title="Entertainment",Astro Ria (Entertainment) (MY) (Indonesian)
+http://www.layarku.tv/media/riav6.m3u8
+#EXTINF:0 tvg-name="Beto TV" tvg-language="English" tvg-country="US" tvg-id="BETO tv" tvg-logo="http://www.userlogos.org/files/logos/14505_deva/ccloud1.png" group-title="Lifestyle",Beto TV (Lifestyle) (US) (English)
+http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8
+#EXTINF:0 tvg-name="Box UK Radio danceradiouk" tvg-language="English" tvg-country="UK" tvg-id="Box UK Radio danceradiouk" tvg-logo="http://danceradiouk.com/wp-content/uploads/2014/06/box11.png" group-title="Radio",Box UK Radio danceradiouk (Radio) (UK) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk2.internet-radio.com:31076/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="Canal 13 Nicaragua" tvg-language="Spanish" tvg-country="NI" tvg-id="Canal 13 Nicaragua" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/6/66/Logo_Viva_Nicaragua_Canal_13.png" group-title="Entertainment",Canal 13 Nicaragua (Entertainment) (NI) (Spanish)
+https://upload.wikimedia.org/wikipedia/commons/6/66/Logo_Viva_Nicaragua_Canal_13.png
+#EXTINF:0 tvg-name="CBS HD" tvg-language="English" tvg-country="US" tvg-id="181.FM - Good Time Oldies" tvg-logo="http://cdn-radiotime-logos.tunein.com/s90409q.png" group-title="Radio",CBS HD (Radio) (US) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uplink.duplexfx.com:8046/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="Champion 5768 FM" tvg-language="English" tvg-country="UK" tvg-id="Champion 5768 FM" tvg-logo="https://fbcdn-photos-g-a.akamaihd.net/hphotos-ak-xap1/v/t1.0-0/s480x480/10670126_513472555467504_3005258150533487784_n.jpg?oh=1827c89702f21dc97278ef8ffd234ff5&oe=566643C3&__gda__=1453446813_4934b4b55eae2572c2b4f51944077db2" group-title="Radio",Champion 5768 FM (Radio) (UK) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk3.internet-radio.com:8060/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="Chilled" tvg-language="English" tvg-country="US" tvg-id="Chilled" tvg-logo="https://pbs.twimg.com/profile_images/641195385382400000/fR9XYoCy.jpg" group-title="Music",Chilled (Music) (US) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=CHIL_1BR&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="Clubland TV" tvg-language="English" tvg-country="UK" tvg-id="Clubland TV" tvg-logo="http://www.aatw.com/wp-content/themes/master/img/tv-clubland-black.png" group-title="Music",Clubland TV (Music) (UK) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=clublandtv&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="DJING Animation HD" tvg-language="English" tvg-country="US" tvg-id="DJING Animation HD" tvg-logo="http://us.djing.com/newimages/logo.png" group-title="Music",DJING Animation HD (Music) (US) (English)
+http://www.djing.com/tv/a-05.m3u8
+#EXTINF:0 tvg-name="DJING Classic HD" tvg-language="English" tvg-country="US" tvg-id="DJING Classic HD" tvg-logo="http://us.djing.com/newimages/logo.png" group-title="Music",DJING Classic HD (Music) (US) (English)
+http://www.djing.com/tv/i-05.m3u8
+#EXTINF:0 tvg-name="DJING Dancefloor HD" tvg-language="English" tvg-country="US" tvg-id="DJING Dancefloor HD" tvg-logo="http://cdn.djing.com/newimages/logo.png" group-title="Music",DJING Dancefloor HD (Music) (US) (English)
+http://www.djing.com/tv/d-05.m3u8
+#EXTINF:0 tvg-name="DJING Hot Hot Hot HD" tvg-language="English" tvg-country="US" tvg-id="DJING Hot Hot Hot HD" tvg-logo="http://us.djing.com/newimages/logo.png" group-title="Music",DJING Hot Hot Hot HD (Music) (US) (English)
+http://www.djing.com/tv/hothothot.m3u8
+#EXTINF:0 tvg-name="DJING Ibiza HD" tvg-language="English" tvg-country="US" tvg-id="DJING Ibiza HD" tvg-logo="http://ak.picdn.net/shutterstock/videos/202162/preview/stock-footage-shot-of-dj-playing-from-behind-looking-out-to-the-crowd-in-privilege-club-ibiza-spain.jpg" group-title="Music",DJING Ibiza HD (Music) (US) (English)
+http://www.djing.com/tv/d-05.m3u8
+#EXTINF:0 tvg-name="DJING Underground HD" tvg-language="English" tvg-country="US" tvg-id="DJING Underground HD" tvg-logo="http://us.djing.com/newimages/logo.png" group-title="Music",DJING Underground HD (Music) (US) (English)
+http://www.djing.com/tv/u-05.m3u8
+#EXTINF:0 tvg-name="Dublins KISS" tvg-language="English" tvg-country="IR" tvg-id="Dublins KISS" tvg-logo="http://www.kissfm-ireland.com/kissfm.png" group-title="Radio",Dublins KISS (Radio) (IR) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk4.internet-radio.com:15476/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="Euro News" tvg-language="Portuguese" tvg-country="PT" tvg-id="Euro News" tvg-logo="http://i.imgur.com/Fna8l8q.jpg" group-title="News",Euro News (News) (PT) (Portuguese)
+http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_pt.m3u8
+#EXTINF:0 tvg-name="EURONEWS FR" tvg-language="French" tvg-country="FR" tvg-id="EURONEWS FR" tvg-logo="http://www.antsmediagroup.com/camera_crew_london_euronews.jpg" group-title="News",EURONEWS FR (News) (FR) (French)
+http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_fr.
+#EXTINF:0 tvg-name="Euronews" tvg-language="English" tvg-country="UK" tvg-id="Euronews" tvg-logo="http://bell-vs-rogers.com/channellogos/cid382euronews.jpg" group-title="News",Euronews (News) (UK) (English)
+http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_en.m3u8
+#EXTINF:0 tvg-name="Euronews" tvg-language="French" tvg-country="FR" tvg-id="Euronews" tvg-logo="http://2.bp.blogspot.com/-bgSjOJk7OpA/VEWJ3YvijBI/AAAAAAAAAQY/VbfaD3aYpBs/s1600/euronews-logo.jpg" group-title="News",Euronews (News) (FR) (French)
+http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_ar.m3u8
+#EXTINF:0 tvg-name="Euronews" tvg-language="German" tvg-country="DE" tvg-id="Euronews" tvg-logo="http://seeklogo.com/images/E/Euronews-logo-1584DEBA3C-seeklogo.com.gif" group-title="News",Euronews (News) (DE) (German)
+http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/14-live.m3u8
+#EXTINF:0 tvg-name="Euronews" tvg-language="Portuguese" tvg-country="PT" tvg-id="Euronews" tvg-logo="http://2.bp.blogspot.com/-bgSjOJk7OpA/VEWJ3YvijBI/AAAAAAAAAQY/VbfaD3aYpBs/s1600/euronews-logo.jpg" group-title="News",Euronews (News) (PT) (Portuguese)
+http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_pt.m3u8
+#EXTINF:0 tvg-name="Euronews" tvg-language="Spanish" tvg-country="ES" tvg-id="Euronews" tvg-logo="http://2.bp.blogspot.com/-bgSjOJk7OpA/VEWJ3YvijBI/AAAAAAAAAQY/VbfaD3aYpBs/s1600/euronews-logo.jpg" group-title="News",Euronews (News) (ES) (Spanish)
+http://fr-par-iphone-1.cdn.hexaglobe.net/streaming/euronews_ewns/ipad_es.m3u8
+#EXTINF:0 tvg-name="Euroneww Italia" tvg-language="Italian" tvg-country="IT" tvg-id="Euroneww Italia" tvg-logo="http://i.imgur.com/xKJtwfk.png" group-title="News",Euroneww Italia (News) (IT) (Italian)
+http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/iphone_it.m3u8
+#EXTINF:0 tvg-name="iNews" tvg-language="Telugu" tvg-country="IN" tvg-id="iNews" tvg-logo="http://images.cloud.yuppcdn.net/yupptv/roku/images/i_news_roku.jpg" group-title="News",iNews (News) (IN) (Telugu)
+https://www.youtube.com/watch?v=SLdgbcmF6Ao.m3u8
+#EXTINF:0 tvg-name="Ingenio TV" tvg-language="Spanish" tvg-country="MX" tvg-id="Ingenio TV" tvg-logo="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSMM0grU2ShX_IXFljelJ9J0S9LiWXxq7cI1koPQM_nvVYl-YrswVspdhQ" group-title="Documentary",Ingenio TV (Documentary) (MX) (Spanish)
+http://dl-dgtve.xsn.com.mx/dgtve/canal30dgtve.mp4/playlist.m3u8?
+#EXTINF:0 tvg-name="Kanal 7" tvg-language="Turkish" tvg-country="TR" tvg-id="Kanal 7" tvg-logo="http://resim.canlitvizle.pro/wp-content/uploads/2013/12/979px-Kanal7Avrupa.jpg" group-title="Lifestyle",Kanal 7 (Lifestyle) (TR) (Turkish)
+http://livede.gostream.nl/kanal7hq/kanal7hq/chunklist_w1242178276.m3u8
+#EXTINF:0 tvg-name="Kanal Kabe" tvg-language="Turkish" tvg-country="TR" tvg-id="Kanal Kabe" tvg-logo="https://lh5.googleusercontent.com/-nIVRgdzbd7k/VWHGP_OP5SI/AAAAAAAADEI/ihaJxa_qLTA/w800-h500-no/al_quran_al_kareem_tv.png" group-title="Lifestyle",Kanal Kabe (Lifestyle) (TR) (Turkish)
+http://livetr.gostream.nl/mekke/mekke/chunklist_w2007164765.m3u8
+#EXTINF:0 tvg-name="Kiss Hits" tvg-language="English" tvg-country="UK" tvg-id="Kiss Hits" tvg-logo="http://www.utalkmarketing.com/pages/fsImageResize.aspx?fname=../UTMImages/2/4102007_155227_Kiss_logo.jpg&w=352&h=249" group-title="Radio",Kiss Hits (Radio) (UK) (English)
+https://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk4.internet-radio.com:10911/listen.pls&t=.m3u
+#EXTINF:0 tvg-name="Medine TV" tvg-language="Arabic" tvg-country="TR" tvg-id="Medine TV" tvg-logo="http://images1.kure.tv/channel_images/logo/66/thumb/MED%C4%B0NE-YEN%C4%B0-LOGO.png?1401995187" group-title="Lifestyle",Medine TV (Lifestyle) (TR) (Arabic)
+http://46.245.160.224/medine/medine/gmswf.m3u8
+#EXTINF:0 tvg-name="Mekke TV" tvg-language="Arabic" tvg-country="TR" tvg-id="Mekke TV" tvg-logo="http://canlitvx.com/wp-content/uploads/Mekke-canlitvx-210x142.png" group-title="Lifestyle",Mekke TV (Lifestyle) (TR) (Arabic)
+http://46.245.160.224/mekke/mekke/gmswf.m3u8
+#EXTINF:0 tvg-name="Now Music" tvg-language="English" tvg-country="US" tvg-id="Now Music" tvg-logo="http://1.bp.blogspot.com/-njnDNkmuDQQ/T1BR93m153I/AAAAAAAAEUQ/E_RGv0Wa09Y/s1600/ntv_telugu.png" group-title="Music",Now Music (Music) (US) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=nowmusic&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="Now Thats What I Call Christmas" tvg-language="English" tvg-country="UK" tvg-id="Now Thats What I Call Christmas" tvg-logo="http://ecx.images-amazon.com/images/I/519TADK3A7L.__PJautoripBadge%2CBottomRight%2C4%2C-40_OU11__.jpg" group-title="Music",Now Thats What I Call Christmas (Music) (UK) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=nowmusic&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="Planet POP" tvg-language="English" tvg-country="US" tvg-id="Planet POP" tvg-logo="http://www.aatw.com/wp-content/themes/master/img/tv-planet-pop.png" group-title="Music",Planet POP (Music) (US) (English)
+http://rrr.sz.xlcdn.com/?account=AATW&file=ppop&type=live&service=wowza&protocol=http&output=playlist.m3u8
+#EXTINF:0 tvg-name="RBC TV" tvg-language="Russian" tvg-country="RU" tvg-id="RBC TV" tvg-logo="http://www.livenewsbox.com/wp-content/uploads/2015/05/RBC-TV1.jpg" group-title="News",RBC TV (News) (RU) (Russian)
+http://online.video.rbc.ru/online/rbctv_480p/index.m3u8
+#EXTINF:0 tvg-name="rmc decouverte" tvg-language="French" tvg-country="FR" tvg-id="rmc decouverte" tvg-logo="https://upload.wikimedia.org/wikipedia/fr/e/ed/RMC_D%25C3%25A9couverte_logo_2012.png" group-title="Documentary",rmc decouverte (Documentary) (FR) (French)
+http://streaming-hub.com/stream/rmc.m3u8
+#EXTINF:0 tvg-name="Rtcg" tvg-language="Croatian/Swedish" tvg-country="HR" tvg-id="Rtcg" tvg-logo="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRsj7W3ZUK978mgKKeDZ9SIVo43NXgA-4ao3eKmFxmOq50MlmqXHj1zoA" group-title="Entertainment",Rtcg (Entertainment) (HR) (Croatian/Swedish)
+http://playertest.longtailvideo.com/adaptive/oceans_aes/oceans_aes.m3u8
+#EXTINF:0 tvg-name="Salaa TV" tvg-language="Persian/English" tvg-country="US" tvg-id="Salaa TV" tvg-logo="http://extreme.com/media/img/extreme/tv_guide.png" group-title="Family",Salaa TV (Family) (US) (Persian/English)
+http://lm.photros.com/3ph2a.isml/Manifest%28format=m3u8-aapl%29.m3u8
+#EXTINF:0 tvg-name="Sat7" tvg-language="Arabic" tvg-country="EG" tvg-id="Sat7" tvg-logo="http://t3.gstatic.com/images?q=tbn:ANd9GcQEph1hr_UeSi2_-EORwfhXop2ndFJ7tO20vbA-6bt7DZkicjuzXwQhjec" group-title="Family",Sat7 (Family) (EG) (Arabic)
+http://www.streamwebtown.com/player/sat7/arabic/stream.m3u8
+#EXTINF:0 tvg-name="Tamil Aruvi" tvg-language="Tamil" tvg-country="IN" tvg-id="Tamil Aruvi" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuCmb-c1t-PUsou3UP6ygz2kwuIHYTrC6JfEFzOHmPp9rQTfGZ1qVHyNI" group-title="News",Tamil Aruvi (News) (IN) (Tamil)
+http://91.82.85.44:1935/scr8174/lives078.sdp/playlist.m3u8
+#EXTINF:0 tvg-name="Telepavia" tvg-language="Italian" tvg-country="IT" tvg-id="Telepavia" tvg-logo="http://www.tv14.net/wp-content/uploads/2010/09/TelePavia1.jpg" group-title="Entertainment",Telepavia (Entertainment) (IT) (Italian)
+http://wms.shared.streamshow.it/telepavia/telepavia/playlist.m3u8
+#EXTINF:0 tvg-name="TSC" tvg-language="English" tvg-country="US" tvg-id="TSC" tvg-logo="https://upload.wikimedia.org/wikipedia/en/0/0c/TSC_TV.png" group-title="Lifestyle",TSC (Lifestyle) (US) (English)
+http://tscstreaming-lh.akamaihd.net/i/TSCLiveStreaming_1@91031/index_3_av-p.m3u8
+#EXTINF:0 tvg-name="TV3 Cat" tvg-language="Catalan" tvg-country="ES" tvg-id="TV3 Cat" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/51/Tv3_logo2005.jpg" group-title="Entertainment",TV3 Cat (Entertainment) (ES) (Catalan)
+http://www.tv3.cat/directetv3cat/tv3catpc.m3u8
+#EXTINF:0 tvg-name="TV3" tvg-language="Malayalam" tvg-country="MY" tvg-id="TV3" tvg-logo="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjanayO4uHKAhXCDpoKHSWrCs8QjRwIBw&url=http%3A%2F%2Ftvon9ac10.blogspot.com%2F&psig=AFQjCNFgyiZRyLeVIEKMNg6cBxaM9gMtIA&ust=1454800949916354" group-title="Family",TV3 (Family) (MY) (Malayalam)
+http://www.layarku.tv/media/2tv3.m3u8
+#EXTINF:0 tvg-name="VOULI" tvg-language="Greek" tvg-country="GR" tvg-id="VOULI" tvg-logo="http://canalesparabolica.com/img/cha/gr/vouliTV_95x84.gif" group-title="Entertainment",VOULI (Entertainment) (GR) (Greek)
+http://streamer-cache.grnet.gr/parliament/hls/webtv.m3u8
+
