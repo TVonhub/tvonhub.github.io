@@ -111,8 +111,6 @@ https://lb1-live-mv.v2h-cdn.com/hls/ffef/tsport/tsport.m3u8
 https://lb1-live-mv.v2h-cdn.com/hls/ffee/mvmall_best/mvmall_best.m3u8
 #EXTINF:-1 tvg-country="THAILAND" tvg-chno="9" ch-number="9" tvg-id="MVMall Plus (51).th" tvg-name="MVMall Plus (51)" tvg-logo="https://media-mvtv.imgix.net/channel/32_y_B1QfWmDNsgnKI7xCzkrYeTt4LR8EGqy6.png" group-title="Thailand", MVMall Plus (51)
 https://lb1-live-mv.v2h-cdn.com/hls/fded/mvmallplus/mvmallplus.m3u8
-#EXTINF:-1 tvg-country="THAILAND" tvg-chno="999" ch-number="999" tvg-id="IPTV-THAI.th" tvg-name="IPTV-THAI" tvg-logo="https://raw.githubusercontent.com/akkradet/IPTV-THAI/master/logo/iptvth.png" group-title="Thailand", IPTV-THAI
-https://raw.githubusercontent.com/akkradet/IPTV-THAI/master/intro.mp4
 #EXTINF:-1 tvg-country="THAILAND" tvg-id="13SiamThai.th" tvg-logo="https://i.imgur.com/FvEp1S2.png" group-title="Thailand",13 Siam Thai (1080p)
 https://live.x2.co.th/live/13livetv-th.m3u8
 #EXTINF:-1 tvg-country="THAILAND" tvg-id="3HD.th" tvg-logo="https://i.imgur.com/YRiulCU.png" group-title="Thailand",3HD
