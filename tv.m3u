@@ -1,5 +1,7 @@
 #EXTM3U
-#EXTINF:-1 tvg-country="THAILAND" tvg-chno="1" ch-number="1" tvg-id="MVTV ท้องถิ่นไทย (75).th" tvg-name="MVTV ท้องถิ่นไทย (75)" tvg-logo="https://media-mvtv.imgix.net/channel/30_y_6j8hFgB9MRvUswTeCySxbJf3k74NQloE.png" group-title="Thailand", MVTV ท้องถิ่นไทย (75)
+#EXTINF:-1 tvg-country="THAILAND" tvg-chno="1" ch-number="1" tvg-id="beIN Sports 1 " tvg-name="beIN Sports 1 " tvg-logo="https://ballthaitv.com/api/table/icon/ch026.png" group-title="Thailand", MVTV ท้องถิ่นไทย (75)
+https://r3-sn-5fo-c37ed16.googleuservideo.com/heng99_bet1/beinsport1_480p/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9OC8xMy8yMDI1IDc6MTU6MjQgUE0maGFzaF92YWx1ZT1kNFpjTXBBR2ZRVUQ5b3NnOWlVTFRnPT0mdmFsaWRtaW51dGVzPTEmc3RybV9sZW49MjcmaWQ9YmdocjYyNTc4Mg==
+#EXTINF:-1 tvg-country="THAILAND" tvg-chno="2" ch-number="1" tvg-id="MVTV ท้องถิ่นไทย (75).th" tvg-name="MVTV ท้องถิ่นไทย (75)" tvg-logo="https://media-mvtv.imgix.net/channel/30_y_6j8hFgB9MRvUswTeCySxbJf3k74NQloE.png" group-title="Thailand", MVTV ท้องถิ่นไทย (75)
 https://lb1-live-mv.v2h-cdn.com/hls/ffff/mvtv75/mvtv75.m3u8
 #EXTINF:-1 tvg-country="THAILAND" tvg-chno="10" ch-number="10" tvg-id="TPTV.th" tvg-name="TPTV" tvg-logo="https://media-mvtv.imgix.net/channel/120_y_VSgE7P9GiDCxrhFWUALYpvzfM12cdqmH.png" group-title="Thailand", TPTV
 https://lb1-live-mv.v2h-cdn.com/hls/ffec/tptv/tptv.m3u8
