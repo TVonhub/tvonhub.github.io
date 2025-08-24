@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live TV Player - Hls.js</title>
+<title>Live TV Player - Hls.js Full</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -21,7 +21,7 @@ body.dark select { background-color: #ffffff; color: #000000; }
 <body class="light">
 
 <header class="sticky top-0 z-50 bg-white/20 backdrop-blur border-b border-slate-200 p-3 flex gap-3 items-center">
-  <h1 class="font-semibold text-lg">Live TV Player (Hls.js)</h1>
+  <h1 class="font-semibold text-lg">Live TV Player (Hls.js Full)</h1>
   <button id="themeToggle" class="px-3 py-1 rounded-lg border">🌙</button>
   <button id="langToggle" class="px-3 py-1 rounded-lg border">🇹🇭</button>
   <span id="statusBadge" class="ml-auto px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs">พร้อม</span>
@@ -55,7 +55,7 @@ body.dark select { background-color: #ffffff; color: #000000; }
   <section class="p-3 rounded-2xl shadow-sm border flex flex-col gap-3">
     <div class="relative rounded-xl overflow-hidden bg-black">
       <video id="video" controls class="w-full aspect-video bg-black rounded-xl"></video>
-      <div id="bufferBar" class="absolute bottom-0 left-0 w-full bg-slate-200">
+      <div id="bufferContainer" class="absolute bottom-0 left-0 w-full bg-slate-200">
         <div class="progress-bar" style="width:0%"></div>
       </div>
     </div>
@@ -173,29 +173,23 @@ function playIndex(i){
   const url = filtered[i].url;
   els.nowChannel.textContent = filtered[i].title;
 
-  // Destroy previous Hls instance
   if(hls){ hls.destroy(); hls=null; }
   els.video.src='';
 
   if(Hls.isSupported()){
     hls = new Hls({
       maxBufferLength:60,
+      maxBufferSize:60*1024*1024,
+      liveSyncDuration:30,
       fragLoadingMaxRetry:20,
-      xhrSetup: xhr => { 
-        xhr.setRequestHeader('User-Agent','com.devcoder.iptvxtreamplayer/111 (Linux; U; Android 11; en; Smart TV; Build/RP1A.200622.001; Cronet/132.0.6779.0)'); 
-      }
+      xhrSetup: xhr => { xhr.setRequestHeader('User-Agent','com.devcoder.iptvxtreamplayer/111 (Linux; Android 11)'); }
     });
     hls.loadSource(url);
     hls.attachMedia(els.video);
-
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      if(els.autoplay.checked) els.video.play();
-    });
-
-    // Buffer / progress update
-    hls.on(Hls.Events.FRAG_BUFFERED, () => updateBufferBar());
-    hls.on(Hls.Events.FRAG_LOADING, () => updateBufferBar());
-    hls.on(Hls.Events.LEVEL_UPDATED, () => updateBufferBar());
+    hls.on(Hls.Events.MANIFEST_PARSED, () => { if(els.autoplay.checked) els.video.play(); });
+    hls.on(Hls.Events.FRAG_BUFFERED, updateBufferBar);
+    hls.on(Hls.Events.FRAG_LOADING, updateBufferBar);
+    hls.on(Hls.Events.LEVEL_UPDATED, updateBufferBar);
   } else if(els.video.canPlayType('application/vnd.apple.mpegurl')){
     els.video.src=url;
     if(els.autoplay.checked) els.video.play();
@@ -209,7 +203,7 @@ function updateBufferBar(){
   const current = els.video.currentTime;
   if(buffered.length>0){
     const end = buffered.end(buffered.length-1);
-    let percent = Math.min(100,(end/current)*100);
+    const percent = Math.min(100, ((end-current)/60)*100); // แสดง % ของ buffer preload 60 วิ
     els.bufferBar.style.width = percent+'%';
   }
 }
