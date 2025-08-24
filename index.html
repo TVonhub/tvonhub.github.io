@@ -1,226 +1,384 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Powershell-lv2Live TV</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body { transition: background 0.3s, color 0.3s; }
-body.light { background: #ffffff; color: #111827; }
-body.light header, body.light section, body.light main > section, body.light main aside section { background-color: #ffffff !important; }
-body.dark { background: #111827; color: #f8fafc; }
-body.dark select { background-color: #ffffff; color: #000000; }
-.thin-scrollbar::-webkit-scrollbar { width:8px; }
-.thin-scrollbar::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
-.thin-scrollbar { scrollbar-width: thin; scrollbar-color:#cbd5e1 transparent; }
-.progress-bar { height:6px; border-radius:3px; background:#4f46e5; transition: width 0.2s; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IPTV Live TV - Hls.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111111; --muted:#666;
+      --card:#ffffff; --border:#e5e5e5; --accent:#2563eb;
+      --row:#f7f7f7; --row-active:#e0ecff; --buffer:#2563eb;
+    }
+    body.dark{
+      --bg:#0f1115; --fg:#e8eef5; --muted:#a3adc2;
+      --card:#131722; --border:#1e2433; --accent:#60a5fa;
+      --row:#0f141f; --row-active:#1f2b43; --buffer:#60a5fa;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans";
+      line-height:1.45; transition:background .25s, color .25s;
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      display:flex; align-items:center; gap:.5rem;
+      padding:.75rem 1rem; border-bottom:1px solid var(--border);
+      background:color-mix(in oklab, var(--bg) 85%, #ffffff 15%);
+      backdrop-filter: blur(6px);
+    }
+    header h1{font-size:1rem; margin:0; font-weight:600}
+    header .spacer{flex:1}
+    header button{
+      border:1px solid var(--border); background:var(--card); color:var(--fg);
+      padding:.4rem .65rem; border-radius:.65rem; cursor:pointer;
+    }
+    main{
+      display:grid; gap:1rem; grid-template-columns: 1fr; padding:1rem; max-width:1200px; margin:0 auto;
+    }
+    @media (min-width: 960px){ main{ grid-template-columns: 320px 1fr; } }
+    .panel{
+      background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1rem;
+    }
+    .field{ display:block; width:100%; border:1px solid var(--border); border-radius:12px; padding:.6rem .75rem; background:var(--bg); color:var(--fg); }
+    .label{ font-size:.9rem; margin-bottom:.35rem; display:block; }
+    .list{ margin:0; padding:0; list-style:none; max-height:65vh; overflow:auto; border:1px solid var(--border); border-radius:12px; }
+    .row{
+      display:flex; align-items:center; gap:.6rem;
+      padding:.55rem .7rem; border-bottom:1px solid var(--border);
+      background:var(--bg); cursor:pointer;
+    }
+    .row:nth-child(odd){ background:var(--row); }
+    .row:last-child{ border-bottom:none; }
+    .row:hover{ filter:brightness(1.02) }
+    .row.active{ background:var(--row-active); }
+    .logo{ width:26px; height:26px; object-fit:contain; border-radius:6px; background:#00000010; }
+    .video-wrap{ position:relative; background:#000; border-radius:16px; overflow:hidden; }
+    video{ width:100%; aspect-ratio:16/9; background:#000; display:block; }
+    .status{
+      margin-top:.5rem; font-size:.9rem; color:var(--muted);
+      display:flex; align-items:center; gap:.75rem; flex-wrap:wrap;
+    }
+    .badge{ padding:.15rem .5rem; border:1px solid var(--border); border-radius:999px; }
+    .buffer-rail{ position:absolute; left:0; right:0; bottom:0; height:6px; background: #e5e7eb33; }
+    .buffer-bar{ height:100%; width:0%; background:var(--buffer); transition:width .2s; }
+    .grid-gap{ display:grid; gap:.6rem; }
+  </style>
 </head>
 <body class="light">
 
-<header class="sticky top-0 z-50 bg-white/20 backdrop-blur border-b border-slate-200 p-3 flex gap-3 items-center">
-  <h1 class="font-semibold text-lg">Powershell-lv2Live TV</h1>
-  <button id="themeToggle" class="px-3 py-1 rounded-lg border">🌙</button>
-  <button id="langToggle" class="px-3 py-1 rounded-lg border">🇹🇭</button>
-  <span id="statusBadge" class="ml-auto px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs">พร้อม</span>
-</header>
+  <header>
+    <h1>📺 IPTV Live</h1>
+    <span class="spacer"></span>
+    <button id="langBtn" title="Switch language">ไทย</button>
+    <button id="themeBtn" title="Toggle theme">☀️</button>
+  </header>
 
-<main class="max-w-7xl mx-auto p-4 grid grid-cols-1 md:grid-cols-[300px,1fr] gap-4">
-  <aside class="space-y-4">
-    <section class="p-4 rounded-2xl shadow-sm border border-slate-200">
-      <label id="playlistLabel" class="block mb-2 font-medium">ที่อยู่ M3U</label>
-      <div class="flex gap-2">
-        <input id="playlistUrl" class="flex-1 px-3 py-2 rounded-xl border" />
-        <button id="loadBtn" class="px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">โหลด</button>
+  <main>
+    <!-- Sidebar: Search + Group + Channel list -->
+    <aside class="panel">
+      <div class="grid-gap">
+        <div>
+          <label class="label" id="searchLabel">ค้นหาช่อง</label>
+          <input id="searchInput" class="field" placeholder="ค้นหาช่อง..." />
+        </div>
+        <div>
+          <label class="label" id="groupLabel">กลุ่มช่อง</label>
+          <select id="groupFilter" class="field"></select>
+        </div>
       </div>
-      <div class="mt-3 flex gap-3 text-sm items-center">
-        <label class="inline-flex items-center gap-2"><input id="autoplayToggle" type="checkbox" class="accent-indigo-600"/> เล่นอัตโนมัติ</label>
-        <button id="reloadBtn" class="ml-auto text-slate-700 border px-3 py-1.5 rounded-lg hover:bg-slate-50">รีเฟรชเพลย์ลิสต์</button>
+
+      <div style="height:.75rem"></div>
+      <div id="count" class="badge">0 ช่อง</div>
+
+      <ul id="channelList" class="list" aria-label="Channel list"></ul>
+    </aside>
+
+    <!-- Player -->
+    <section class="panel">
+      <div class="video-wrap">
+        <video id="video" controls playsinline></video>
+        <div class="buffer-rail"><div id="bufferBar" class="buffer-bar"></div></div>
       </div>
-      <p id="errorBox" class="hidden mt-3 text-sm text-rose-700 bg-rose-50 border rounded-xl p-3"></p>
+      <div class="status">
+        <span id="nowPlaying" class="badge">—</span>
+        <span id="tech" class="badge">Hls.js</span>
+        <span id="bufInfo">Buffer: 0s (0%)</span>
+      </div>
     </section>
+  </main>
 
-    <section class="p-4 rounded-2xl shadow-sm border border-slate-200">
-      <div class="mb-2">
-        <input id="searchInput" class="w-full px-3 py-2 rounded-xl border mb-2" placeholder="ค้นหาช่อง..." />
-        <select id="groupFilter" class="w-full px-3 py-2 rounded-xl border text-sm">
-          <!-- ตัวเลือกกลุ่มช่อง -->
-        </select>
-      </div>
-      <div id="channelCount" class="text-xs mb-2">0 ช่อง</div>
-      <ul id="channelList" class="thin-scrollbar max-h-[60vh] overflow-auto divide-y divide-slate-100"></ul>
-    </section>
-  </aside>
+  <script>
+  // ====== Config ======
+  const PLAYLIST_URL = "https://powershell-lv2.github.io/tv.m3u"; // โหลดอัตโนมัติเมื่อเปิดหน้า
+  const BUFFER_TARGET_SEC = 60; // ใช้คำนวณเปอร์เซ็นต์แถบ buffer
 
-  <section class="p-3 rounded-2xl shadow-sm border flex flex-col gap-3">
-    <div class="relative rounded-xl overflow-hidden bg-black">
-      <video id="video" controls class="w-full aspect-video bg-black rounded-xl"></video>
-      <div id="bufferContainer" class="absolute bottom-0 left-0 w-full bg-slate-200">
-        <div class="progress-bar" style="width:0%"></div>
-      </div>
-    </div>
-    <div class="flex flex-wrap gap-2 text-sm items-center mt-2">
-      <span id="nowPlayingChannel" class="font-semibold"></span>
-      <button id="openInNewTab" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">เปิดลิงก์สตรีม</button>
-      <button id="copyStreamUrl" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">คัดลอกลิงก์</button>
-      <span id="techInfo" class="ml-auto text-xs text-slate-500">Hls.js</span>
-    </div>
-  </section>
-</main>
+  // ====== State ======
+  let allChannels = [];     // ช่องทั้งหมดจากเพลย์ลิสต์
+  let viewChannels = [];    // ช่องหลังกรอง
+  let currentIndex = -1;    // index ใน viewChannels
+  let hls = null;
+  let lang = localStorage.getItem("lang") || "th";  // "th" | "en"
+  let theme = localStorage.getItem("theme") || "light"; // "light" | "dark"
 
-<script>
-const els = {
-  url: document.getElementById('playlistUrl'),
-  loadBtn: document.getElementById('loadBtn'),
-  reloadBtn: document.getElementById('reloadBtn'),
-  autoplay: document.getElementById('autoplayToggle'),
-  error: document.getElementById('errorBox'),
-  list: document.getElementById('channelList'),
-  search: document.getElementById('searchInput'),
-  group: document.getElementById('groupFilter'),
-  count: document.getElementById('channelCount'),
-  video: document.getElementById('video'),
-  bufferBar: document.querySelector('.progress-bar'),
-  nowChannel: document.getElementById('nowPlayingChannel'),
-  theme: document.getElementById('themeToggle'),
-  lang: document.getElementById('langToggle'),
-  playlistLabel: document.getElementById('playlistLabel')
-};
+  // ====== Elements ======
+  const els = {
+    video: document.getElementById("video"),
+    bufferBar: document.getElementById("bufferBar"),
+    bufInfo: document.getElementById("bufInfo"),
+    list: document.getElementById("channelList"),
+    count: document.getElementById("count"),
+    search: document.getElementById("searchInput"),
+    group: document.getElementById("groupFilter"),
+    now: document.getElementById("nowPlaying"),
+    tech: document.getElementById("tech"),
+    langBtn: document.getElementById("langBtn"),
+    themeBtn: document.getElementById("themeBtn"),
+    searchLabel: document.getElementById("searchLabel"),
+    groupLabel: document.getElementById("groupLabel"),
+  };
 
-const DEFAULT_URL = 'https://powershell-lv2.github.io/tv.m3u';
-let channels=[], filtered=[], groups=[], currentIndex=-1;
-let hls=null;
-let currentTheme = localStorage.getItem('theme') || 'light';
-let currentLang = localStorage.getItem('lang') || 'th';
-document.body.className = currentTheme;
+  // ====== Init theme/lang ======
+  document.body.classList.toggle("dark", theme === "dark");
+  document.body.classList.toggle("light", theme !== "dark");
+  updateLangUI();
 
-function translateUI(){
-  if(currentLang==='th'){
-    els.playlistLabel.textContent='ที่อยู่ M3U';
-    els.search.placeholder='ค้นหาช่อง...';
-    els.theme.textContent = document.body.classList.contains('dark')?"🌙 โหมดมืด":"☀️ โหมดสว่าง";
-    els.lang.textContent="🇹🇭";
-  } else {
-    els.playlistLabel.textContent='M3U URL';
-    els.search.placeholder='Search channel...';
-    els.theme.textContent = document.body.classList.contains('dark')?"🌙 Dark":"☀️ Light";
-    els.lang.textContent="🇬🇧";
+  // ====== Helpers ======
+  function t(th, en){ return lang === "th" ? th : en; }
+
+  function parseM3U(text){
+    const lines = text.split(/\r?\n/);
+    const out = [];
+    let meta = null;
+    for (let raw of lines){
+      const line = raw.trim();
+      if (!line) continue;
+      if (line.startsWith("#EXTINF")){
+        const group = /group-title="([^"]*)"/.exec(line)?.[1] ?? "";
+        const logo = /tvg-logo="([^"]*)"/.exec(line)?.[1] ?? "";
+        const name = line.split(",").slice(1).join(",").trim() || "Channel";
+        meta = { title:name, group, logo };
+      } else if (!line.startsWith("#") && meta){
+        out.push({ ...meta, url: line });
+        meta = null;
+      }
+    }
+    return out;
   }
-}
 
-function parseM3U(text){
-  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  let result=[], meta=null;
-  const attrRe=/([a-zA-Z0-9\-]+)="([^"]*)"/g;
-  for(const line of lines){
-    if(line.startsWith('#EXTINF')){
-      const attrs={}; let m;
-      while((m=attrRe.exec(line))!==null) attrs[m[1]]=m[2];
-      const title=line.split(',').slice(1).join(',').trim();
-      meta={title, logo: attrs['tvg-logo']||'', group: attrs['group-title']||''};
-    } else if(!line.startsWith('#') && meta){
-      result.push({...meta, url:line});
-      meta=null;
+  function renderGroups(){
+    const groups = Array.from(new Set(allChannels.map(c=>c.group || t("อื่นๆ","Others"))));
+    els.group.innerHTML = "";
+    const optAll = document.createElement("option");
+    optAll.value = "__ALL__";
+    optAll.textContent = t("ทุกกลุ่ม","All groups");
+    els.group.appendChild(optAll);
+    groups.forEach(g=>{
+      const opt = document.createElement("option");
+      opt.value = g || t("อื่นๆ","Others");
+      opt.textContent = g || t("อื่นๆ","Others");
+      els.group.appendChild(opt);
+    });
+    els.group.value = "__ALL__";
+  }
+
+  function renderList(){
+    els.list.innerHTML = "";
+    viewChannels.forEach((c,i)=>{
+      const li = document.createElement("li");
+      li.className = "row" + (i===currentIndex ? " active" : "");
+      li.title = c.title;
+      li.innerHTML = (c.logo?`<img class="logo" src="${c.logo}" onerror="this.style.display='none'">`:"")
+                    + `<span>${c.title}</span>`;
+      li.addEventListener("click", ()=> playIndex(i, true));
+      els.list.appendChild(li);
+    });
+    els.count.textContent = t(`${viewChannels.length} ช่อง`, `${viewChannels.length} channels`);
+  }
+
+  function applyFilter(){
+    const q = els.search.value.trim().toLowerCase();
+    const g = els.group.value;
+    viewChannels = allChannels.filter(c=>{
+      const okText = !q || c.title.toLowerCase().includes(q);
+      const okGroup = g==="__ALL__" || (c.group || t("อื่นๆ","Others")) === g;
+      return okText && okGroup;
+    });
+    renderList();
+  }
+
+  function destroyHls(){
+    if(hls){
+      try{ hls.destroy(); }catch(e){}
+      hls = null;
+    }
+    els.video.removeAttribute("src");
+    els.video.load();
+  }
+
+  function playIndex(i, userSelect=false){
+    if(!viewChannels[i]) return;
+    currentIndex = i;
+    const ch = viewChannels[i];
+
+    // save last channel by URL (เสถียรกว่าชื่อ)
+    localStorage.setItem("lastUrl", ch.url);
+
+    // status
+    els.now.textContent = t("กำลังเล่น: ","Now playing: ") + ch.title;
+
+    destroyHls();
+
+    if (Hls.isSupported()){
+      hls = new Hls({
+        // Buffering
+        maxBufferLength: 60,
+        maxBufferSize: 60 * 1024 * 1024,
+        maxBufferHole: 2,
+        // Live sync
+        liveSyncDuration: 30,
+        // Robustness
+        fragLoadingMaxRetry: 10,
+        manifestLoadingMaxRetry: 5,
+        levelLoadingMaxRetry: 5,
+      });
+      hls.loadSource(ch.url);
+      hls.attachMedia(els.video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        // autoplay เมื่อเปิด/เลือกช่อง
+        els.video.play().catch(()=>{ /* บราวเซอร์บล็อก autoplay เมื่อไม่มี user gesture */ });
+      });
+
+      // อัปเดตแถบ buffer
+      const update = ()=> updateBufferBar();
+      hls.on(Hls.Events.FRAG_BUFFERED, update);
+      hls.on(Hls.Events.FRAG_LOADING, update);
+      hls.on(Hls.Events.LEVEL_UPDATED, update);
+      els.video.addEventListener("timeupdate", update, { passive:true });
+
+    } else if (els.video.canPlayType('application/vnd.apple.mpegurl')){
+      // Safari
+      els.video.src = ch.url;
+      els.video.play().catch(()=>{});
+      els.video.addEventListener("timeupdate", updateBufferBar, { passive:true });
+    } else {
+      // fallback (บางเบราว์เซอร์เก่า)
+      els.video.src = ch.url;
+      els.video.play().catch(()=>{});
+      els.video.addEventListener("timeupdate", updateBufferBar, { passive:true });
+    }
+
+    // active row
+    renderList();
+  }
+
+  function updateBufferBar(){
+    const v = els.video;
+    if (v.buffered.length === 0){
+      els.bufferBar.style.width = "0%";
+      els.bufInfo.textContent = t("Buffer: 0วินาที (0%)", "Buffer: 0s (0%)");
+      return;
+    }
+    // หาช่วง buffer ที่ครอบคลุม currentTime
+    const tNow = v.currentTime;
+    let end = v.buffered.end(v.buffered.length - 1);
+    for(let i=0;i<v.buffered.length;i++){
+      if (v.buffered.start(i) <= tNow && tNow <= v.buffered.end(i)){
+        end = v.buffered.end(i);
+        break;
+      }
+    }
+    const bufferedSec = Math.max(0, end - tNow);
+    const pct = Math.max(0, Math.min(100, (bufferedSec / BUFFER_TARGET_SEC) * 100));
+    els.bufferBar.style.width = pct + "%";
+    els.bufInfo.textContent = t(`Buffer: ${bufferedSec.toFixed(1)} วินาที (${pct.toFixed(0)}%)`,
+                                `Buffer: ${bufferedSec.toFixed(1)}s (${pct.toFixed(0)}%)`);
+  }
+
+  async function loadPlaylist(){
+    try{
+      const res = await fetch(PLAYLIST_URL, { cache: "no-cache" });
+      const text = await res.text();
+      allChannels = parseM3U(text);
+
+      // groups & list
+      renderGroups();
+
+      // อัปเดตมุมมองเริ่มต้น
+      viewChannels = allChannels.slice();
+      renderList();
+
+      // เล่นอัตโนมัติ: ช่องล่าสุด (ด้วย URL) ถ้ามี, ไม่งั้นช่องแรก
+      const lastUrl = localStorage.getItem("lastUrl");
+      let idx = 0;
+      if (lastUrl){
+        const found = viewChannels.findIndex(c=>c.url===lastUrl);
+        if (found >= 0) idx = found;
+      }
+      playIndex(idx, false);
+    } catch(err){
+      els.now.textContent = t("โหลดเพลย์ลิสต์ไม่สำเร็จ","Failed to load playlist");
+      console.error(err);
     }
   }
-  return result;
-}
 
-async function loadPlaylist(url){
-  try{
-    const res = await fetch(url);
-    const text = await res.text();
-    channels=parseM3U(text);
-    const groupSet = new Set(channels.map(c=>c.group||'อื่นๆ'));
-    groups=['ทั้งหมด', ...groupSet];
-    els.group.innerHTML = groups.map(g=>`<option value="${g}">${g}</option>`).join('');
-    filterChannels();
-    const lastIndex = localStorage.getItem('lastChannelIndex');
-    if(lastIndex !== null && filtered[lastIndex]) playIndex(lastIndex);
-  }catch(e){ console.error(e); els.error.textContent=e.message; els.error.classList.remove('hidden'); }
-}
+  function updateLangUI(){
+    els.langBtn.textContent = lang === "th" ? "ไทย" : "EN";
+    els.themeBtn.textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+    els.search.placeholder = t("ค้นหาช่อง...","Search channel...");
+    els.searchLabel.textContent = t("ค้นหาช่อง","Search");
+    els.groupLabel.textContent = t("กลุ่มช่อง","Channel group");
+    // อัปเดต count/now/bufInfo ตามภาษา (รีเฟรชค่าอีกครั้ง)
+    els.count.textContent = t(`${viewChannels.length} ช่อง`, `${viewChannels.length} channels`);
+    const txt = els.now.textContent;
+    if (txt && txt.includes(": ")){
+      const name = txt.split(": ").slice(1).join(": ");
+      els.now.textContent = t("กำลังเล่น: ","Now playing: ") + name;
+    }
+    updateBufferBar();
+  }
 
-function filterChannels(){
-  const groupVal = els.group.value;
-  const keyword = els.search.value.toLowerCase();
-  filtered = channels.filter(c=>{
-    const matchGroup = (groupVal==='ทั้งหมด' || c.group===groupVal);
-    const matchKeyword = c.title.toLowerCase().includes(keyword);
-    return matchGroup && matchKeyword;
+  // ====== Events ======
+  els.search.addEventListener("input", ()=>{
+    applyFilter();
+    // หากช่องที่กำลังเล่นถูกกรองออก ให้เล่นช่องแรกของรายการที่กรอง
+    const cur = viewChannels[currentIndex];
+    if (!cur){
+      if (viewChannels.length) playIndex(0, false);
+    } else {
+      // sync active row
+      renderList();
+    }
   });
-  renderList();
-}
 
-function renderList(){
-  els.count.textContent = `${filtered.length} ช่อง`;
-  els.list.innerHTML = filtered.map((c,i)=>{
-    const isActive = (i==currentIndex) ? 'bg-indigo-100 dark:bg-indigo-700' : '';
-    return `
-    <li class="relative group">
-      <button data-i="${i}" class="flex items-center gap-2 w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg ${isActive}">
-        ${c.logo ? `<img src="${c.logo}" alt="" class="w-6 h-6 object-contain rounded">` : ''}
-        <span>${c.title}</span>
-      </button>
-    </li>
-    `;
-  }).join('');
-}
+  els.group.addEventListener("change", ()=>{
+    applyFilter();
+    if (!viewChannels[currentIndex] && viewChannels.length){
+      playIndex(0, false);
+    }
+  });
 
-function playIndex(i){
-  if(!filtered[i]) return;
-  currentIndex=i;
-  localStorage.setItem('lastChannelIndex', i);
-  const url = filtered[i].url;
-  els.nowChannel.textContent = filtered[i].title;
+  els.langBtn.addEventListener("click", ()=>{
+    lang = (lang === "th") ? "en" : "th";
+    localStorage.setItem("lang", lang);
+    updateLangUI();
+    renderList();
+    renderGroups(); // รีเรนเดอร์ชื่อกลุ่ม "อื่นๆ/Others" ใน dropdown หากจำเป็น
+  });
 
-  if(hls){ hls.destroy(); hls=null; }
-  els.video.src='';
+  els.themeBtn.addEventListener("click", ()=>{
+    const toDark = !document.body.classList.contains("dark");
+    document.body.classList.toggle("dark", toDark);
+    document.body.classList.toggle("light", !toDark);
+    localStorage.setItem("theme", toDark ? "dark" : "light");
+    updateLangUI();
+  });
 
-  if(Hls.isSupported()){
-    hls = new Hls({
-      maxBufferLength:60,
-      maxBufferSize:60*1024*1024,
-      liveSyncDuration:30,
-      fragLoadingMaxRetry:20,
-      xhrSetup: xhr => { xhr.setRequestHeader('User-Agent','com.devcoder.iptvxtreamplayer/111 (Linux; Android 11)'); }
-    });
-    hls.loadSource(url);
-    hls.attachMedia(els.video);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => { if(els.autoplay.checked) els.video.play(); });
-    hls.on(Hls.Events.FRAG_BUFFERED, updateBufferBar);
-    hls.on(Hls.Events.FRAG_LOADING, updateBufferBar);
-    hls.on(Hls.Events.LEVEL_UPDATED, updateBufferBar);
-  } else if(els.video.canPlayType('application/vnd.apple.mpegurl')){
-    els.video.src=url;
-    if(els.autoplay.checked) els.video.play();
-  }
-
-  renderList();
-}
-
-function updateBufferBar(){
-  const buffered = els.video.buffered;
-  const current = els.video.currentTime;
-  if(buffered.length>0){
-    const end = buffered.end(buffered.length-1);
-    const percent = Math.min(100, ((end-current)/60)*100); // buffer 60 วิ
-    els.bufferBar.style.width = percent+'%';
-  }
-}
-
-// Event listeners
-els.loadBtn.onclick = () => loadPlaylist(els.url.value);
-els.search.addEventListener('input', filterChannels);
-els.group.addEventListener('change', filterChannels);
-els.list.onclick = e => { const btn = e.target.closest('button[data-i]'); if(btn) playIndex(btn.dataset.i); };
-els.reloadBtn.onclick = () => loadPlaylist(els.url.value);
-els.theme.onclick = () => { document.body.classList.toggle('dark'); document.body.classList.toggle('light'); localStorage.setItem('theme', document.body.className); translateUI(); };
-els.lang.onclick = () => { currentLang = currentLang==='th'?'en':'th'; localStorage.setItem('lang', currentLang); translateUI(); };
-els.url.value = DEFAULT_URL;
-loadPlaylist(DEFAULT_URL);
-translateUI();
-</script>
+  // ====== Start ======
+  loadPlaylist();
+  </script>
 </body>
 </html>
