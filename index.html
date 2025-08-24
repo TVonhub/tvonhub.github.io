@@ -1,129 +1,238 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My IPTV Service</title>
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#0ea5a4;--muted:#9aa4b2;--glass:rgba(255,255,255,0.03)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial; background:linear-gradient(180deg,#071023 0%, #0b1220 100%);color:#e6eef6;line-height:1.5}
-    .container{max-width:1000px;margin:36px auto;padding:28px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:28px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
-    header{display:flex;gap:18px;align-items:center}
-    .logo{width:78px;height:78px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,#064e55,#0fb6b3);box-shadow:0 6px 18px rgba(15,182,179,0.18)}
-    h1{margin:0;font-size:22px}
-    p.lead{color:var(--muted);margin:8px 0 18px}
-    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
-    @media (max-width:880px){.grid{grid-template-columns:1fr} .logo{width:64px;height:64px}}
-    .features{display:grid;gap:12px}
-    .feature{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(14,165,164,0.12);color:var(--accent);font-weight:600;margin-right:8px}
-    .device-list{display:flex;flex-wrap:wrap;gap:8px}
-    .device{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-size:14px}
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;background:var(--accent);color:#042024}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#e6eef6}
-    .small{font-size:13px;color:var(--muted)}
-    footer{margin-top:18px;color:var(--muted);font-size:13px}
-    .contact-list{display:flex;flex-direction:column;gap:8px}
-    code.m3u{display:block;padding:10px;border-radius:8px;background:rgba(0,0,0,0.25);color:#cbe7e6;font-family:monospace;overflow-wrap:anywhere}
-    .warning{background:linear-gradient(90deg, rgba(255,215,87,0.07), transparent);padding:10px;border-radius:8px;border:1px solid rgba(255,215,87,0.06);color:#ffd77a}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3U Live TV Player</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { transition: background 0.3s, color 0.3s; }
+  body.light { background: #ffffff; color: #111827; }
+  body.light header, body.light section, body.light main > section, body.light main aside section { background-color: #ffffff !important; }
+  body.dark { background: #111827; color: #f8fafc; }
+  body.dark select { background-color: #ffffff; color: #000000; }
+  .thin-scrollbar::-webkit-scrollbar { width:8px; }
+  .thin-scrollbar::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
+  .thin-scrollbar { scrollbar-width: thin; scrollbar-color:#cbd5e1 transparent; }
+</style>
 </head>
-<body>
-  <div class="container">
-    <div class="card">
-      <header>
-        <div class="logo">📺</div>
-        <div>
-          <h1>My IPTV Service</h1>
-          <p class="lead">ยินดีต้อนรับสู่ My IPTV Service — บริการดูทีวีออนไลน์คุณภาพสูง ดูได้ทุกที่ทุกเวลา ไม่ว่าคุณจะอยู่บ้าน หรือกำลังเดินทาง ก็สามารถรับชมได้ผ่านอินเทอร์เน็ตเพียงคลิกเดียว</p>
-        </div>
-      </header>
+<body class="light">
+<header class="sticky top-0 z-50 bg-white/20 backdrop-blur border-b border-slate-200 p-3 flex gap-3 items-center">
+  <h1 class="font-semibold text-lg">M3U Live TV Player</h1>
+  <button id="themeToggle" class="px-3 py-1 rounded-lg border">🌙</button>
+  <button id="langToggle" class="px-3 py-1 rounded-lg border">🇹🇭</button>
+  <span id="statusBadge" class="ml-auto px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs">พร้อม</span>
+</header>
 
-      <div class="grid">
-        <main>
-          <section style="margin-top:18px">
-            <h3>🌟 จุดเด่นของเรา</h3>
-            <div class="features">
-              <div class="feature">✅ <strong>ช่องเยอะ</strong> — ครบทุกหมวดหมู่: ข่าว, กีฬา, ภาพยนตร์, ซีรีส์, การ์ตูน และอีกมากมาย</div>
-              <div class="feature">✅ <strong>คุณภาพสูง</strong> — สตรีมคมชัดระดับ Full HD / 4K</div>
-              <div class="feature">✅ <strong>ใช้งานง่าย</strong> — รองรับทุกอุปกรณ์: Smart TV, มือถือ, คอมพิวเตอร์, กล่อง Android</div>
-              <div class="feature">✅ <strong>อัปเดตช่องอัตโนมัติ</strong> — ไม่ต้องเสียเวลาหาไฟล์ใหม่</div>
-              <div class="feature">✅ <strong>รองรับ EPG</strong> — แสดงผังรายการทีวีล่วงหน้า</div>
-            </div>
-
-            <section style="margin-top:18px">
-              <h3>🖥️ รองรับอุปกรณ์</h3>
-              <div class="device-list">
-                <div class="device">📱 มือถือ / แท็บเล็ต (iOS, Android)</div>
-                <div class="device">💻 คอมพิวเตอร์ (Windows, Mac)</div>
-                <div class="device">📺 Smart TV (Samsung, LG, Android TV)</div>
-                <div class="device">📦 กล่อง IPTV / Android Box</div>
-              </div>
-            </section>
-
-            <section style="margin-top:18px">
-              <h3>📦 วิธีใช้งาน</h3>
-              <ol class="small">
-                <li>ดาวน์โหลดแอป IPTV Player (เช่น IPTV Smarters, TiviMate, OTT Navigator, KODI)</li>
-                <li>กรอก ลิงก์ M3U / Xtream Codes ที่เราให้</li>
-                <li>เริ่มรับชมได้ทันที!</li>
-              </ol>
-
-              <p style="margin-top:10px"><strong>M3U :</strong></p>
-              <code class="m3u">https://powershell-lv2.github.io/tv.m3u</code>
-
-              <div class="actions">
-                <a class="btn" href="https://powershell-lv2.github.io/tv.m3u" target="_blank" rel="noopener">เปิดไฟล์ M3U</a>
-                <a class="btn ghost" href="https://powershell-lv2.github.io/" target="_blank" rel="noopener">ไปที่เว็บไซต์</a>
-              </div>
-            </section>
-
-            <section style="margin-top:18px">
-              <h3>💬 ติดต่อเรา</h3>
-              <div class="contact-list">
-                <div class="small">🌐 เว็บไซต์: <a href="https://powershell-lv2.github.io/" target="_blank" rel="noopener">powershell-lv2.github.io</a></div>
-                <div class="small">📧 อีเมล: <a href="mailto:chetbodins@gmail.com">chetbodins@gmail.com</a></div>
-                <div class="small">💬 Facebook: <a href="https://www.facebook.com/Mui21.93" target="_blank" rel="noopener">Mui21.93</a></div>
-              </div>
-            </section>
-
-            <section style="margin-top:18px">
-              <div class="warning">⚠️ คำเตือน: IPTV ของเราสำหรับการใช้งานส่วนบุคคลเท่านั้น ไม่สนับสนุนการละเมิดลิขสิทธิ์</div>
-            </section>
-
-          </section>
-        </main>
-
-        <aside>
-          <div style="position:sticky;top:28px">
-            <div style="background:rgba(255,255,255,0.02);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)">
-              <h4 style="margin:0 0 8px">สรุปด่วน</h4>
-              <p class="small" style="margin:0 0 10px">ดูทีวีออนไลน์คุณภาพสูง รองรับหลายอุปกรณ์ มี M3U ให้พร้อม และรองรับ EPG</p>
-              <div style="display:flex;gap:8px">
-                <a class="btn" href="https://powershell-lv2.github.io/tv.m3u" target="_blank" rel="noopener">ดาวน์โหลด M3U</a>
-                <a class="btn ghost" href="mailto:chetbodins@gmail.com">ส่งอีเมล</a>
-              </div>
-            </div>
-
-            <div style="margin-top:14px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:10px;border:1px solid rgba(255,255,255,0.02)">
-              <h5 style="margin:0 0 8px">คำถามที่พบบ่อย</h5>
-              <p class="small" style="margin:0">Q: ต้องใช้บัญชีพิเศษไหม?<br>A: ไม่ต้อง — เพียงใส่ลิงก์ M3U ในแอป player ที่รองรับ</p>
-            </div>
-          </div>
-        </aside>
+<main class="max-w-7xl mx-auto p-4 grid grid-cols-1 md:grid-cols-[300px,1fr] gap-4">
+  <aside class="space-y-4">
+    <section class="p-4 rounded-2xl shadow-sm border border-slate-200">
+      <label id="playlistLabel" class="block mb-2 font-medium">ที่อยู่ M3U</label>
+      <div class="flex gap-2">
+        <input id="playlistUrl" class="flex-1 px-3 py-2 rounded-xl border" />
+        <button id="loadBtn" class="px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">โหลด</button>
       </div>
+      <div class="mt-3 flex gap-3 text-sm items-center">
+        <label class="inline-flex items-center gap-2"><input id="autoplayToggle" type="checkbox" class="accent-indigo-600"/> เล่นอัตโนมัติ</label>
+        <button id="reloadBtn" class="ml-auto text-slate-700 border px-3 py-1.5 rounded-lg hover:bg-slate-50">รีเฟรชเพลย์ลิสต์</button>
+      </div>
+      <p id="errorBox" class="hidden mt-3 text-sm text-rose-700 bg-rose-50 border rounded-xl p-3"></p>
+    </section>
 
-      <footer>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-          <div class="small">© My IPTV Service • ภาพรวมบริการ</div>
-          <div class="small">ออกแบบโดย chetbodins • ติดต่อ: chetbodins@gmail.com</div>
-        </div>
-      </footer>
+    <section class="p-4 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex gap-2 mb-2">
+        <input id="searchInput" class="flex-1 px-3 py-2 rounded-xl border" placeholder="ค้นหาช่อง..." />
+        <select id="groupFilter" class="px-3 py-2 rounded-xl border text-sm min-w-[140px]"></select>
+      </div>
+      <div id="channelCount" class="text-xs mb-2">0 ช่อง</div>
+      <ul id="channelList" class="thin-scrollbar max-h-[60vh] overflow-auto divide-y divide-slate-100"></ul>
+    </section>
+  </aside>
+
+  <section class="p-3 rounded-2xl shadow-sm border flex flex-col gap-3">
+    <div class="relative aspect-video bg-black rounded-xl overflow-hidden">
+      <video id="video" class="w-full h-full" controls playsinline webkit-playsinline></video>
+      <div id="nowPlaying" class="absolute bottom-2 left-2 right-2 text-xs md:text-sm text-white/90 bg-black/40 px-2 py-1 rounded-lg"></div>
     </div>
-  </div>
+    <div class="flex flex-wrap gap-2 text-sm items-center">
+      <span id="nowPlayingChannel" class="font-semibold"></span>
+      <button id="openInNewTab" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">เปิดลิงก์สตรีม</button>
+      <button id="copyStreamUrl" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">คัดลอกลิงก์</button>
+      <span id="techInfo" class="ml-auto text-xs text-slate-500">—</span>
+    </div>
+  </section>
+</main>
+
+<script>
+const els = {
+  url: document.getElementById('playlistUrl'),
+  loadBtn: document.getElementById('loadBtn'),
+  reloadBtn: document.getElementById('reloadBtn'),
+  autoplay: document.getElementById('autoplayToggle'),
+  error: document.getElementById('errorBox'),
+  list: document.getElementById('channelList'),
+  search: document.getElementById('searchInput'),
+  group: document.getElementById('groupFilter'),
+  count: document.getElementById('channelCount'),
+  video: document.getElementById('video'),
+  now: document.getElementById('nowPlaying'),
+  nowChannel: document.getElementById('nowPlayingChannel'),
+  status: document.getElementById('statusBadge'),
+  open: document.getElementById('openInNewTab'),
+  copy: document.getElementById('copyStreamUrl'),
+  tech: document.getElementById('techInfo'),
+  theme: document.getElementById('themeToggle'),
+  lang: document.getElementById('langToggle'),
+  playlistLabel: document.getElementById('playlistLabel')
+};
+
+const DEFAULT_URL = 'https://powershell-lv2.github.io/tv.m3u';
+let channels=[], filtered=[], groups=[], currentIndex=-1, hls=null;
+let currentTheme = localStorage.getItem('theme') || 'light';
+let currentLang = localStorage.getItem('lang') || 'th';
+document.body.className = currentTheme;
+
+function translateUI(){
+  if(currentLang==='th'){
+    els.playlistLabel.textContent='ที่อยู่ M3U';
+    els.search.placeholder='ค้นหาช่อง...';
+    els.theme.textContent = document.body.classList.contains('dark')?"🌙 โหมดมืด":"☀️ โหมดสว่าง";
+    els.lang.textContent="🇹🇭";
+  } else {
+    els.playlistLabel.textContent='M3U URL';
+    els.search.placeholder='Search channel...';
+    els.theme.textContent = document.body.classList.contains('dark')?"🌙 Dark":"☀️ Light";
+    els.lang.textContent="🇬🇧";
+  }
+}
+
+function parseM3U(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  let result=[], meta=null;
+  const attrRe=/([a-zA-Z0-9\-]+)="([^"]*)"/g;
+  for(const line of lines){
+    if(line.startsWith('#EXTINF')){
+      const attrs={}; let m;
+      while((m=attrRe.exec(line))!==null) attrs[m[1]]=m[2];
+      const title=line.split(',').slice(1).join(',').trim();
+      meta={title, logo: attrs['tvg-logo']||'', group: attrs['group-title']||''};
+    } else if(!line.startsWith('#') && meta){
+      result.push({...meta, url:line});
+      meta=null;
+    }
+  }
+  return result;
+}
+
+async function loadPlaylist(url){
+  try{
+    const res = await fetch(url);
+    const text = await res.text();
+    channels=parseM3U(text);
+    const groupSet = new Set(channels.map(c=>c.group||'อื่นๆ'));
+    groups=['ทั้งหมด', ...groupSet];
+    els.group.innerHTML = groups.map(g=>`<option value="${g}">${g}</option>`).join('');
+    filterChannels();
+    const lastIndex = localStorage.getItem('lastChannelIndex');
+    if(lastIndex !== null && filtered[lastIndex]) playIndex(lastIndex);
+  }catch(e){ console.error(e); els.error.textContent=e.message; els.error.classList.remove('hidden'); }
+}
+
+function filterChannels(){
+  const groupVal = els.group.value;
+  const keyword = els.search.value.toLowerCase();
+  filtered = channels.filter(c=>{
+    const matchGroup = (groupVal==='ทั้งหมด' || c.group===groupVal);
+    const matchKeyword = c.title.toLowerCase().includes(keyword);
+    return matchGroup && matchKeyword;
+  });
+  renderList();
+}
+
+function renderList(){
+  els.count.textContent = `${filtered.length} ช่อง`;
+  els.list.innerHTML = filtered.map((c,i)=>{
+    const isActive = (i==currentIndex) ? 'bg-indigo-100 dark:bg-indigo-700' : '';
+    return `
+    <li class="relative group">
+      <button data-i="${i}" class="flex items-center gap-2 w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg ${isActive}">
+        ${c.logo ? `<img src="${c.logo}" alt="" class="w-6 h-6 object-contain rounded">` : ''}
+        <span>${c.title}</span>
+      </button>
+      <div class="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-2 py-1 rounded-lg bg-black text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-1">
+        ${c.logo ? `<img src="${c.logo}" class="w-4 h-4 object-contain rounded">` : ''}
+        <span>${c.title}</span>
+      </div>
+    </li>
+    `;
+  }).join('');
+}
+
+function destroyHls(){ if(hls){hls.destroy(); hls=null;} }
+
+function playIndex(i){
+  if(!filtered[i]) return;
+  currentIndex=i;
+  localStorage.setItem('lastChannelIndex', i);
+  const url = filtered[i].url;
+  const video = els.video;
+  destroyHls(); video.pause(); video.removeAttribute('src'); video.load();
+
+  // อัปเดตสถานะช่องที่กำลังเล่น
+  els.nowChannel.textContent = filtered[i].title;
+
+  if(Hls.isSupported()){
+    hls = new Hls({
+      enableWorker: true,
+      lowLatencyMode: false,
+      maxBufferLength: 60,
+      maxMaxBufferLength: 120,
+      maxBufferHole: 0.5,
+      liveSyncDuration: 15,
+      liveMaxLatencyDuration: 30,
+      fragLoadingTimeOut: 40000,
+      fragLoadingMaxRetry: 10,
+      fragLoadingRetryDelay: 3000,
+      manifestLoadingMaxRetry: 10
+    });
+    hls.on(Hls.Events.ERROR,(event,data)=>{
+      if(data.fatal){
+        switch(data.type){
+          case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
+          case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
+          default: destroyHls(); break;
+        }
+      }
+    });
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>{ video.play().catch(()=>{}); });
+    els.tech.textContent='เทคโนโลยี: hls.js';
+  } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    video.src=url; video.play().catch(()=>{}); els.tech.textContent='เทคโนโลยี: Native HLS';
+  } else {
+    video.src=url; video.play().catch(()=>{}); els.tech.textContent='เทคโนโลยี: <video>';
+  }
+
+  // อัปเดต highlight ช่อง
+  renderList();
+}
+
+// Event listeners
+els.loadBtn.onclick = () => loadPlaylist(els.url.value);
+els.search.addEventListener('input', filterChannels);
+els.group.addEventListener('change', filterChannels);
+els.list.onclick = e => { const btn = e.target.closest('button[data-i]'); if(btn) playIndex(btn.dataset.i); };
+els.reloadBtn.onclick = () => loadPlaylist(els.url.value);
+els.theme.onclick = () => { document.body.classList.toggle('dark'); document.body.classList.toggle('light'); localStorage.setItem('theme', document.body.className); translateUI(); };
+els.lang.onclick = () => { currentLang = currentLang==='th'?'en':'th'; localStorage.setItem('lang', currentLang); translateUI(); };
+els.open.onclick = () => { if(currentIndex>=0 && filtered[currentIndex]) window.open(filtered[currentIndex].url,'_blank'); };
+els.copy.onclick = () => { if(currentIndex>=0 && filtered[currentIndex]){ navigator.clipboard.writeText(filtered[currentIndex].url).then(()=> alert(currentLang==='th'?'คัดลอกเรียบร้อย!':'Copied!')); } };
+
+els.url.value = DEFAULT_URL;
+loadPlaylist(DEFAULT_URL);
+translateUI();
+</script>
 </body>
 </html>
