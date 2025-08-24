@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Powershell-lv2 Live TV</title>
+<title>Live TV Player - Hls.js Full</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -21,7 +21,7 @@ body.dark select { background-color: #ffffff; color: #000000; }
 <body class="light">
 
 <header class="sticky top-0 z-50 bg-white/20 backdrop-blur border-b border-slate-200 p-3 flex gap-3 items-center">
-  <h1 class="font-semibold text-lg">Powershell-lv2 Live TV</h1>
+  <h1 class="font-semibold text-lg">Live TV Player (Hls.js Full)</h1>
   <button id="themeToggle" class="px-3 py-1 rounded-lg border">🌙</button>
   <button id="langToggle" class="px-3 py-1 rounded-lg border">🇹🇭</button>
   <span id="statusBadge" class="ml-auto px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs">พร้อม</span>
@@ -43,9 +43,11 @@ body.dark select { background-color: #ffffff; color: #000000; }
     </section>
 
     <section class="p-4 rounded-2xl shadow-sm border border-slate-200">
-      <div class="flex gap-2 mb-2">
-        <input id="searchInput" class="flex-1 px-3 py-2 rounded-xl border" placeholder="ค้นหาช่อง..." />
-        <select id="groupFilter" class="px-3 py-2 rounded-xl border text-sm min-w-[140px]"></select>
+      <div class="mb-2">
+        <input id="searchInput" class="w-full px-3 py-2 rounded-xl border mb-2" placeholder="ค้นหาช่อง..." />
+        <select id="groupFilter" class="w-full px-3 py-2 rounded-xl border text-sm">
+          <!-- ตัวเลือกกลุ่มช่อง -->
+        </select>
       </div>
       <div id="channelCount" class="text-xs mb-2">0 ช่อง</div>
       <ul id="channelList" class="thin-scrollbar max-h-[60vh] overflow-auto divide-y divide-slate-100"></ul>
@@ -203,7 +205,7 @@ function updateBufferBar(){
   const current = els.video.currentTime;
   if(buffered.length>0){
     const end = buffered.end(buffered.length-1);
-    const percent = Math.min(100, ((end-current)/60)*100); // แสดง % ของ buffer preload 60 วิ
+    const percent = Math.min(100, ((end-current)/60)*100); // buffer 60 วิ
     els.bufferBar.style.width = percent+'%';
   }
 }
