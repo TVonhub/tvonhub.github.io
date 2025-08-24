@@ -3,23 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Powershell-lv2 IPTV</title>
+<title>Live TV Player - Hls.js</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  body { transition: background 0.3s, color 0.3s; }
-  body.light { background: #ffffff; color: #111827; }
-  body.light header, body.light section, body.light main > section, body.light main aside section { background-color: #ffffff !important; }
-  body.dark { background: #111827; color: #f8fafc; }
-  body.dark select { background-color: #ffffff; color: #000000; }
-  .thin-scrollbar::-webkit-scrollbar { width:8px; }
-  .thin-scrollbar::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
-  .thin-scrollbar { scrollbar-width: thin; scrollbar-color:#cbd5e1 transparent; }
+body { transition: background 0.3s, color 0.3s; }
+body.light { background: #ffffff; color: #111827; }
+body.light header, body.light section, body.light main > section, body.light main aside section { background-color: #ffffff !important; }
+body.dark { background: #111827; color: #f8fafc; }
+body.dark select { background-color: #ffffff; color: #000000; }
+.thin-scrollbar::-webkit-scrollbar { width:8px; }
+.thin-scrollbar::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:9999px; }
+.thin-scrollbar { scrollbar-width: thin; scrollbar-color:#cbd5e1 transparent; }
+.progress-bar { height:6px; border-radius:3px; background:#4f46e5; transition: width 0.2s; }
 </style>
 </head>
 <body class="light">
+
 <header class="sticky top-0 z-50 bg-white/20 backdrop-blur border-b border-slate-200 p-3 flex gap-3 items-center">
-  <h1 class="font-semibold text-lg">Powershell-lv2 IPTV</h1>
+  <h1 class="font-semibold text-lg">Live TV Player (Hls.js)</h1>
   <button id="themeToggle" class="px-3 py-1 rounded-lg border">🌙</button>
   <button id="langToggle" class="px-3 py-1 rounded-lg border">🇹🇭</button>
   <span id="statusBadge" class="ml-auto px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs">พร้อม</span>
@@ -51,15 +53,17 @@
   </aside>
 
   <section class="p-3 rounded-2xl shadow-sm border flex flex-col gap-3">
-    <div class="relative aspect-video bg-black rounded-xl overflow-hidden">
-      <video id="video" class="w-full h-full" controls playsinline webkit-playsinline></video>
-      <div id="nowPlaying" class="absolute bottom-2 left-2 right-2 text-xs md:text-sm text-white/90 bg-black/40 px-2 py-1 rounded-lg"></div>
+    <div class="relative rounded-xl overflow-hidden bg-black">
+      <video id="video" controls class="w-full aspect-video bg-black rounded-xl"></video>
+      <div id="bufferBar" class="absolute bottom-0 left-0 w-full bg-slate-200">
+        <div class="progress-bar" style="width:0%"></div>
+      </div>
     </div>
-    <div class="flex flex-wrap gap-2 text-sm items-center">
+    <div class="flex flex-wrap gap-2 text-sm items-center mt-2">
       <span id="nowPlayingChannel" class="font-semibold"></span>
       <button id="openInNewTab" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">เปิดลิงก์สตรีม</button>
       <button id="copyStreamUrl" class="px-3 py-1.5 rounded-lg border hover:bg-slate-50">คัดลอกลิงก์</button>
-      <span id="techInfo" class="ml-auto text-xs text-slate-500">—</span>
+      <span id="techInfo" class="ml-auto text-xs text-slate-500">Hls.js</span>
     </div>
   </section>
 </main>
@@ -76,19 +80,16 @@ const els = {
   group: document.getElementById('groupFilter'),
   count: document.getElementById('channelCount'),
   video: document.getElementById('video'),
-  now: document.getElementById('nowPlaying'),
+  bufferBar: document.querySelector('.progress-bar'),
   nowChannel: document.getElementById('nowPlayingChannel'),
-  status: document.getElementById('statusBadge'),
-  open: document.getElementById('openInNewTab'),
-  copy: document.getElementById('copyStreamUrl'),
-  tech: document.getElementById('techInfo'),
   theme: document.getElementById('themeToggle'),
   lang: document.getElementById('langToggle'),
   playlistLabel: document.getElementById('playlistLabel')
 };
 
 const DEFAULT_URL = 'https://powershell-lv2.github.io/tv.m3u';
-let channels=[], filtered=[], groups=[], currentIndex=-1, hls=null;
+let channels=[], filtered=[], groups=[], currentIndex=-1;
+let hls=null;
 let currentTheme = localStorage.getItem('theme') || 'light';
 let currentLang = localStorage.getItem('lang') || 'th';
 document.body.className = currentTheme;
@@ -160,63 +161,57 @@ function renderList(){
         ${c.logo ? `<img src="${c.logo}" alt="" class="w-6 h-6 object-contain rounded">` : ''}
         <span>${c.title}</span>
       </button>
-      <div class="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-2 py-1 rounded-lg bg-black text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-1">
-        ${c.logo ? `<img src="${c.logo}" class="w-4 h-4 object-contain rounded">` : ''}
-        <span>${c.title}</span>
-      </div>
     </li>
     `;
   }).join('');
 }
-
-function destroyHls(){ if(hls){hls.destroy(); hls=null;} }
 
 function playIndex(i){
   if(!filtered[i]) return;
   currentIndex=i;
   localStorage.setItem('lastChannelIndex', i);
   const url = filtered[i].url;
-  const video = els.video;
-  destroyHls(); video.pause(); video.removeAttribute('src'); video.load();
-
-  // อัปเดตสถานะช่องที่กำลังเล่น
   els.nowChannel.textContent = filtered[i].title;
+
+  // Destroy previous Hls instance
+  if(hls){ hls.destroy(); hls=null; }
+  els.video.src='';
 
   if(Hls.isSupported()){
     hls = new Hls({
-      enableWorker: true,
-      lowLatencyMode: false,
-      maxBufferLength: 60,
-      maxMaxBufferLength: 120,
-      maxBufferHole: 0.5,
-      liveSyncDuration: 15,
-      liveMaxLatencyDuration: 30,
-      fragLoadingTimeOut: 40000,
-      fragLoadingMaxRetry: 10,
-      fragLoadingRetryDelay: 3000,
-      manifestLoadingMaxRetry: 10
-    });
-    hls.on(Hls.Events.ERROR,(event,data)=>{
-      if(data.fatal){
-        switch(data.type){
-          case Hls.ErrorTypes.NETWORK_ERROR: hls.startLoad(); break;
-          case Hls.ErrorTypes.MEDIA_ERROR: hls.recoverMediaError(); break;
-          default: destroyHls(); break;
-        }
+      maxBufferLength:60,
+      fragLoadingMaxRetry:20,
+      xhrSetup: xhr => { 
+        xhr.setRequestHeader('User-Agent','com.devcoder.iptvxtreamplayer/111 (Linux; U; Android 11; en; Smart TV; Build/RP1A.200622.001; Cronet/132.0.6779.0)'); 
       }
     });
     hls.loadSource(url);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{ video.play().catch(()=>{}); });
-    els.tech.textContent='เทคโนโลยี: hls.js';
-  } else if(video.canPlayType('application/vnd.apple.mpegurl')){
-    video.src=url; video.play().catch(()=>{}); els.tech.textContent='เทคโนโลยี: Native HLS';
-  } else {
-    video.src=url; video.play().catch(()=>{}); els.tech.textContent='เทคโนโลยี: <video>';
+    hls.attachMedia(els.video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      if(els.autoplay.checked) els.video.play();
+    });
+
+    // Buffer / progress update
+    hls.on(Hls.Events.FRAG_BUFFERED, () => updateBufferBar());
+    hls.on(Hls.Events.FRAG_LOADING, () => updateBufferBar());
+    hls.on(Hls.Events.LEVEL_UPDATED, () => updateBufferBar());
+  } else if(els.video.canPlayType('application/vnd.apple.mpegurl')){
+    els.video.src=url;
+    if(els.autoplay.checked) els.video.play();
   }
 
-  // อัปเดต highlight ช่อง
   renderList();
+}
+
+function updateBufferBar(){
+  const buffered = els.video.buffered;
+  const current = els.video.currentTime;
+  if(buffered.length>0){
+    const end = buffered.end(buffered.length-1);
+    let percent = Math.min(100,(end/current)*100);
+    els.bufferBar.style.width = percent+'%';
+  }
 }
 
 // Event listeners
@@ -227,9 +222,6 @@ els.list.onclick = e => { const btn = e.target.closest('button[data-i]'); if(btn
 els.reloadBtn.onclick = () => loadPlaylist(els.url.value);
 els.theme.onclick = () => { document.body.classList.toggle('dark'); document.body.classList.toggle('light'); localStorage.setItem('theme', document.body.className); translateUI(); };
 els.lang.onclick = () => { currentLang = currentLang==='th'?'en':'th'; localStorage.setItem('lang', currentLang); translateUI(); };
-els.open.onclick = () => { if(currentIndex>=0 && filtered[currentIndex]) window.open(filtered[currentIndex].url,'_blank'); };
-els.copy.onclick = () => { if(currentIndex>=0 && filtered[currentIndex]){ navigator.clipboard.writeText(filtered[currentIndex].url).then(()=> alert(currentLang==='th'?'คัดลอกเรียบร้อย!':'Copied!')); } };
-
 els.url.value = DEFAULT_URL;
 loadPlaylist(DEFAULT_URL);
 translateUI();
