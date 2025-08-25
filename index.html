@@ -83,6 +83,23 @@
     }
     #donate-card h3, #donate-card h4{margin-bottom:10px;}
     #donate-card img{margin-bottom:10px;}
+
+    /* ====== Modern Scrollbar (Mac-like fade) ====== */
+    ::-webkit-scrollbar {
+      width: 8px; height: 8px;
+    }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border); border-radius: 10px; opacity: 0;
+      transition: opacity 0.4s, background 0.3s;
+    }
+    .show-scrollbar::-webkit-scrollbar-thumb { opacity: 1; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    /* Firefox */
+    * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+    .show-scrollbar { scrollbar-color: var(--border) transparent; }
+
   </style>
 </head>
 <body class="light">
@@ -95,7 +112,6 @@
   </header>
 
   <main>
-    <!-- Sidebar: Search + Group + Channel list -->
     <aside class="panel">
       <div class="grid-gap">
         <div>
@@ -107,14 +123,11 @@
           <select id="groupFilter" class="field"></select>
         </div>
       </div>
-
       <div style="height:.75rem"></div>
       <div id="count" class="badge">0 ช่อง</div>
-
       <ul id="channelList" class="list" aria-label="Channel list"></ul>
     </aside>
 
-    <!-- Player -->
     <section class="panel">
       <div class="video-wrap">
         <video id="video" controls playsinline></video>
@@ -128,7 +141,6 @@
     </section>
   </main>
 
-  <!-- ====== Donate Floating Widget ====== -->
   <div id="donate-toggle">💝 Donate</div>
   <div id="donate-card">
     <div onclick="toggleDonate(false)" style="position:absolute; top:8px; right:12px; cursor:pointer; font-size:18px; color:#888;">✖</div>
@@ -157,7 +169,6 @@
   const PLAYLIST_URL = "https://powershell-lv2.github.io/tv.m3u";
   const BUFFER_TARGET_SEC = 60;
 
-  // ====== State ======
   let allChannels = [];
   let viewChannels = [];
   let currentIndex = -1;
@@ -165,7 +176,6 @@
   let lang = localStorage.getItem("lang") || "th";
   let theme = localStorage.getItem("theme") || "light";
 
-  // ====== Elements ======
   const els = {
     video: document.getElementById("video"),
     bufferBar: document.getElementById("bufferBar"),
@@ -188,7 +198,6 @@
 
   function t(th, en){ return lang === "th" ? th : en; }
 
-  // ====== Parse & Render ======
   function parseM3U(text){
     const lines = text.split(/\r?\n/);
     const out = [];
@@ -356,10 +365,9 @@
 
   loadPlaylist();
 
-  // ====== Donate Card Script ======
+  // ====== Donate Card ======
   const toggleBtn = document.getElementById('donate-toggle');
   const card = document.getElementById('donate-card');
-
   function toggleDonate(show=true){
     if(show){
       card.style.opacity="1";
@@ -373,10 +381,21 @@
       toggleBtn.textContent="💝 Donate";
     }
   }
-
   toggleBtn.onclick=function(){
     if(card.style.opacity==="0" || card.style.opacity===""){ toggleDonate(true); }else{ toggleDonate(false); }
   };
+
+  // ====== Scrollbar Fade-in/out (Mac-like) ======
+  let sbTimers = new WeakMap();
+  function showScrollbar(el){
+    el.classList.add("show-scrollbar");
+    clearTimeout(sbTimers.get(el));
+    const timer = setTimeout(()=> el.classList.remove("show-scrollbar"), 1000);
+    sbTimers.set(el, timer);
+  }
+  document.addEventListener("mousemove", (e)=> { let el = e.target.closest("*"); if(el) showScrollbar(el); });
+  document.addEventListener("scroll", (e)=> { let el = e.target; if(el) showScrollbar(el); }, true);
+
   </script>
 </body>
 </html>
