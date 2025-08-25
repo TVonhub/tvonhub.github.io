@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Powershell-lv2 Live TV</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
@@ -33,18 +33,18 @@
     header .spacer{flex:1}
     header button{
       border:1px solid var(--border); background:var(--card); color:var(--fg);
-      padding:.6rem .8rem; border-radius:.65rem; cursor:pointer; font-size:16px;
+      padding:.4rem .65rem; border-radius:.65rem; cursor:pointer;
     }
     main{
-      display:grid; gap:1rem; grid-template-columns: 1fr; padding:1rem; max-width:100%; margin:0 auto;
+      display:grid; gap:1rem; grid-template-columns: 1fr; padding:1rem; max-width:1200px; margin:0 auto;
     }
-    @media (min-width: 960px){ main{ grid-template-columns: 320px 1fr; max-width:1200px; } }
+    @media (min-width: 960px){ main{ grid-template-columns: 320px 1fr; } }
     .panel{
       background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1rem;
     }
-    .field{ display:block; width:100%; border:1px solid var(--border); border-radius:12px; padding:10px; background:var(--bg); color:var(--fg); font-size:16px; }
-    .label{ font-size:1rem; margin-bottom:.35rem; display:block; }
-    .list{ margin:0; padding:0; list-style:none; max-height:60vh; overflow:auto; border:1px solid var(--border); border-radius:12px; -webkit-overflow-scrolling: touch; }
+    .field{ display:block; width:100%; border:1px solid var(--border); border-radius:12px; padding:.6rem .75rem; background:var(--bg); color:var(--fg); }
+    .label{ font-size:.9rem; margin-bottom:.35rem; display:block; }
+    .list{ margin:0; padding:0; list-style:none; max-height:65vh; overflow:auto; border:1px solid var(--border); border-radius:12px; }
     .row{
       display:flex; align-items:center; gap:.6rem;
       padding:.55rem .7rem; border-bottom:1px solid var(--border);
@@ -55,10 +55,10 @@
     .row:hover{ filter:brightness(1.02) }
     .row.active{ background:var(--row-active); }
     .logo{ width:26px; height:26px; object-fit:contain; border-radius:6px; background:#00000010; }
-    .video-wrap{ position:relative; background:#000; border-radius:16px; overflow:hidden; width:100%; }
-    video{ width:100%; height:auto; aspect-ratio:16/9; background:#000; display:block; border-radius:16px; }
+    .video-wrap{ position:relative; background:#000; border-radius:16px; overflow:hidden; }
+    video{ width:100%; aspect-ratio:16/9; background:#000; display:block; }
     .status{
-      margin-top:.5rem; font-size:0.9rem; color:var(--muted);
+      margin-top:.5rem; font-size:.9rem; color:var(--muted);
       display:flex; align-items:center; gap:.75rem; flex-wrap:wrap;
     }
     .badge{ padding:.15rem .5rem; border:1px solid var(--border); border-radius:999px; }
@@ -68,28 +68,35 @@
 
     /* ====== Donate Card Styles ====== */
     #donate-toggle{
-      position:fixed; bottom:15px; right:15px;
-      background:#007bff; color:white; padding:12px 16px;
+      position:fixed; bottom:20px; right:20px;
+      background:#007bff; color:white; padding:10px 15px;
       border-radius:50px; box-shadow:0 4px 8px rgba(0,0,0,0.2);
-      cursor:pointer; z-index:10000; font-family:sans-serif; font-size:16px;
+      cursor:pointer; z-index:10000; font-family:sans-serif; font-size:14px;
     }
     #donate-card{
-      position:fixed; bottom:60px; right:50%;
-      width:90%; max-width:320px; padding:20px;
+      position:fixed; bottom:70px; right:20px;
+      width:300px; padding:20px;
       border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.2);
       background:#ffffff; text-align:center; font-family:sans-serif; z-index:9999;
-      opacity:0; transform:translateX(50%) translateY(30px); pointer-events:none;
+      opacity:0; transform:translateY(30px); pointer-events:none;
       transition: all 0.4s ease;
     }
     #donate-card h3, #donate-card h4{margin-bottom:10px;}
     #donate-card img{margin-bottom:10px;}
 
-    /* ====== Modern Scrollbar ====== */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    /* ====== Modern Scrollbar (Mac-like fade) ====== */
+    ::-webkit-scrollbar {
+      width: 8px; height: 8px;
+    }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; opacity: 0; transition: opacity 0.4s, background 0.3s; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border); border-radius: 10px; opacity: 0;
+      transition: opacity 0.4s, background 0.3s;
+    }
     .show-scrollbar::-webkit-scrollbar-thumb { opacity: 1; }
     ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    /* Firefox */
     * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
     .show-scrollbar { scrollbar-color: var(--border) transparent; }
 
@@ -364,12 +371,12 @@
   function toggleDonate(show=true){
     if(show){
       card.style.opacity="1";
-      card.style.transform="translateX(50%) translateY(0)";
+      card.style.transform="translateY(0)";
       card.style.pointerEvents="auto";
       toggleBtn.textContent="❌ Close";
     }else{
       card.style.opacity="0";
-      card.style.transform="translateX(50%) translateY(30px)";
+      card.style.transform="translateY(30px)";
       card.style.pointerEvents="none";
       toggleBtn.textContent="💝 Donate";
     }
@@ -378,7 +385,7 @@
     if(card.style.opacity==="0" || card.style.opacity===""){ toggleDonate(true); }else{ toggleDonate(false); }
   };
 
-  // ====== Scrollbar Fade-in/out ======
+  // ====== Scrollbar Fade-in/out (Mac-like) ======
   let sbTimers = new WeakMap();
   function showScrollbar(el){
     el.classList.add("show-scrollbar");
