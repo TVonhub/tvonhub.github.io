@@ -65,6 +65,24 @@
     .buffer-rail{ position:absolute; left:0; right:0; bottom:0; height:6px; background: #e5e7eb33; }
     .buffer-bar{ height:100%; width:0%; background:var(--buffer); transition:width .2s; }
     .grid-gap{ display:grid; gap:.6rem; }
+
+    /* ====== Donate Card Styles ====== */
+    #donate-toggle{
+      position:fixed; bottom:20px; right:20px;
+      background:#007bff; color:white; padding:10px 15px;
+      border-radius:50px; box-shadow:0 4px 8px rgba(0,0,0,0.2);
+      cursor:pointer; z-index:10000; font-family:sans-serif; font-size:14px;
+    }
+    #donate-card{
+      position:fixed; bottom:70px; right:20px;
+      width:300px; padding:20px;
+      border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.2);
+      background:#ffffff; text-align:center; font-family:sans-serif; z-index:9999;
+      opacity:0; transform:translateY(30px); pointer-events:none;
+      transition: all 0.4s ease;
+    }
+    #donate-card h3, #donate-card h4{margin-bottom:10px;}
+    #donate-card img{margin-bottom:10px;}
   </style>
 </head>
 <body class="light">
@@ -110,18 +128,42 @@
     </section>
   </main>
 
+  <!-- ====== Donate Floating Widget ====== -->
+  <div id="donate-toggle">💝 Donate</div>
+  <div id="donate-card">
+    <div onclick="toggleDonate(false)" style="position:absolute; top:8px; right:12px; cursor:pointer; font-size:18px; color:#888;">✖</div>
+    
+    <h3>📢 แชร์</h3>
+    <div style="margin-bottom:20px;">
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://powershell-lv2.github.io" target="_blank" style="text-decoration:none; margin:5px;">
+        <button style="padding:8px 12px; border:none; border-radius:8px; background:#1877F2; color:white; cursor:pointer; font-size:14px;">Facebook</button>
+      </a>
+      <a href="https://twitter.com/intent/tweet?url=https://powershell-lv2.github.io&text=ลองมาดูกันสิ!" target="_blank" style="text-decoration:none; margin:5px;">
+        <button style="padding:8px 12px; border:none; border-radius:8px; background:#000000; color:white; cursor:pointer; font-size:14px;">X</button>
+      </a>
+    </div>
+
+    <h4>☕ Donate BTC</h4>
+    <img src="https://raw.githubusercontent.com/powershell-lv2/powershell-lv2.github.io/refs/heads/main/btc.png" style="width:140px; height:140px;" alt="Donate BTC QR"/>
+    <p style="font-size:12px; word-break:break-all; margin-bottom:20px;">131Kt1WfTD776XaP1qLRLPKgdn7W5aKYYH</p>
+
+    <h4>💙 พร้อมเพย์</h4>
+    <img src="https://raw.githubusercontent.com/powershell-lv2/powershell-lv2.github.io/refs/heads/main/Promptpay.jpg" style="width:140px; height:140px;" alt="PromptPay QR"/>
+    <p style="font-size:12px; margin:0;">0947802584</p>
+  </div>
+
   <script>
   // ====== Config ======
-  const PLAYLIST_URL = "https://powershell-lv2.github.io/tv.m3u"; // โหลดอัตโนมัติเมื่อเปิดหน้า
-  const BUFFER_TARGET_SEC = 60; // ใช้คำนวณเปอร์เซ็นต์แถบ buffer
+  const PLAYLIST_URL = "https://powershell-lv2.github.io/tv.m3u";
+  const BUFFER_TARGET_SEC = 60;
 
   // ====== State ======
-  let allChannels = [];     // ช่องทั้งหมดจากเพลย์ลิสต์
-  let viewChannels = [];    // ช่องหลังกรอง
-  let currentIndex = -1;    // index ใน viewChannels
+  let allChannels = [];
+  let viewChannels = [];
+  let currentIndex = -1;
   let hls = null;
-  let lang = localStorage.getItem("lang") || "th";  // "th" | "en"
-  let theme = localStorage.getItem("theme") || "light"; // "light" | "dark"
+  let lang = localStorage.getItem("lang") || "th";
+  let theme = localStorage.getItem("theme") || "light";
 
   // ====== Elements ======
   const els = {
@@ -140,14 +182,13 @@
     groupLabel: document.getElementById("groupLabel"),
   };
 
-  // ====== Init theme/lang ======
   document.body.classList.toggle("dark", theme === "dark");
   document.body.classList.toggle("light", theme !== "dark");
   updateLangUI();
 
-  // ====== Helpers ======
   function t(th, en){ return lang === "th" ? th : en; }
 
+  // ====== Parse & Render ======
   function parseM3U(text){
     const lines = text.split(/\r?\n/);
     const out = [];
@@ -190,8 +231,7 @@
       const li = document.createElement("li");
       li.className = "row" + (i===currentIndex ? " active" : "");
       li.title = c.title;
-      li.innerHTML = (c.logo?`<img class="logo" src="${c.logo}" onerror="this.style.display='none'">`:"")
-                    + `<span>${c.title}</span>`;
+      li.innerHTML = (c.logo?`<img class="logo" src="${c.logo}" onerror="this.style.display='none'">`:"") + `<span>${c.title}</span>`;
       li.addEventListener("click", ()=> playIndex(i, true));
       els.list.appendChild(li);
     });
@@ -210,10 +250,7 @@
   }
 
   function destroyHls(){
-    if(hls){
-      try{ hls.destroy(); }catch(e){}
-      hls = null;
-    }
+    if(hls){ try{ hls.destroy(); }catch(e){} hls=null; }
     els.video.removeAttribute("src");
     els.video.load();
   }
@@ -222,163 +259,124 @@
     if(!viewChannels[i]) return;
     currentIndex = i;
     const ch = viewChannels[i];
-
-    // save last channel by URL (เสถียรกว่าชื่อ)
     localStorage.setItem("lastUrl", ch.url);
-
-    // status
     els.now.textContent = t("กำลังเล่น: ","Now playing: ") + ch.title;
-
     destroyHls();
 
-    if (Hls.isSupported()){
-      hls = new Hls({
-        // Buffering
-        maxBufferLength: 60,
-        maxBufferSize: 60 * 1024 * 1024,
-        maxBufferHole: 2,
-        // Live sync
-        liveSyncDuration: 30,
-        // Robustness
-        fragLoadingMaxRetry: 10,
-        manifestLoadingMaxRetry: 5,
-        levelLoadingMaxRetry: 5,
-      });
+    if(Hls.isSupported()){
+      hls = new Hls({ maxBufferLength:60, maxBufferSize:60*1024*1024, maxBufferHole:2, liveSyncDuration:30,
+                      fragLoadingMaxRetry:10, manifestLoadingMaxRetry:5, levelLoadingMaxRetry:5 });
       hls.loadSource(ch.url);
       hls.attachMedia(els.video);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        // autoplay เมื่อเปิด/เลือกช่อง
-        els.video.play().catch(()=>{ /* บราวเซอร์บล็อก autoplay เมื่อไม่มี user gesture */ });
-      });
-
-      // อัปเดตแถบ buffer
+      hls.on(Hls.Events.MANIFEST_PARSED, ()=> els.video.play().catch(()=>{}));
       const update = ()=> updateBufferBar();
       hls.on(Hls.Events.FRAG_BUFFERED, update);
       hls.on(Hls.Events.FRAG_LOADING, update);
       hls.on(Hls.Events.LEVEL_UPDATED, update);
       els.video.addEventListener("timeupdate", update, { passive:true });
-
-    } else if (els.video.canPlayType('application/vnd.apple.mpegurl')){
-      // Safari
-      els.video.src = ch.url;
-      els.video.play().catch(()=>{});
-      els.video.addEventListener("timeupdate", updateBufferBar, { passive:true });
     } else {
-      // fallback (บางเบราว์เซอร์เก่า)
       els.video.src = ch.url;
       els.video.play().catch(()=>{});
       els.video.addEventListener("timeupdate", updateBufferBar, { passive:true });
     }
 
-    // active row
     renderList();
   }
 
   function updateBufferBar(){
-    const v = els.video;
-    if (v.buffered.length === 0){
-      els.bufferBar.style.width = "0%";
-      els.bufInfo.textContent = t("Buffer: 0วินาที (0%)", "Buffer: 0s (0%)");
-      return;
-    }
-    // หาช่วง buffer ที่ครอบคลุม currentTime
-    const tNow = v.currentTime;
-    let end = v.buffered.end(v.buffered.length - 1);
-    for(let i=0;i<v.buffered.length;i++){
-      if (v.buffered.start(i) <= tNow && tNow <= v.buffered.end(i)){
-        end = v.buffered.end(i);
-        break;
-      }
-    }
-    const bufferedSec = Math.max(0, end - tNow);
-    const pct = Math.max(0, Math.min(100, (bufferedSec / BUFFER_TARGET_SEC) * 100));
-    els.bufferBar.style.width = pct + "%";
-    els.bufInfo.textContent = t(`Buffer: ${bufferedSec.toFixed(1)} วินาที (${pct.toFixed(0)}%)`,
-                                `Buffer: ${bufferedSec.toFixed(1)}s (${pct.toFixed(0)}%)`);
+    const v=els.video;
+    if(v.buffered.length===0){ els.bufferBar.style.width="0%"; els.bufInfo.textContent=t("Buffer: 0วินาที (0%)","Buffer: 0s (0%)"); return; }
+    const tNow=v.currentTime;
+    let end=v.buffered.end(v.buffered.length-1);
+    for(let i=0;i<v.buffered.length;i++){ if(v.buffered.start(i)<=tNow && tNow<=v.buffered.end(i)){ end=v.buffered.end(i); break; } }
+    const bufferedSec=Math.max(0,end-tNow);
+    const pct=Math.max(0, Math.min(100,(bufferedSec/BUFFER_TARGET_SEC)*100));
+    els.bufferBar.style.width=pct+"%";
+    els.bufInfo.textContent=t(`Buffer: ${bufferedSec.toFixed(1)} วินาที (${pct.toFixed(0)}%)`, `Buffer: ${bufferedSec.toFixed(1)}s (${pct.toFixed(0)}%)`);
   }
 
   async function loadPlaylist(){
     try{
-      const res = await fetch(PLAYLIST_URL, { cache: "no-cache" });
+      const res = await fetch(PLAYLIST_URL, { cache:"no-cache" });
       const text = await res.text();
-      allChannels = parseM3U(text);
-
-      // groups & list
+      allChannels=parseM3U(text);
       renderGroups();
-
-      // อัปเดตมุมมองเริ่มต้น
-      viewChannels = allChannels.slice();
+      viewChannels=allChannels.slice();
       renderList();
-
-      // เล่นอัตโนมัติ: ช่องล่าสุด (ด้วย URL) ถ้ามี, ไม่งั้นช่องแรก
-      const lastUrl = localStorage.getItem("lastUrl");
-      let idx = 0;
-      if (lastUrl){
-        const found = viewChannels.findIndex(c=>c.url===lastUrl);
-        if (found >= 0) idx = found;
-      }
-      playIndex(idx, false);
-    } catch(err){
-      els.now.textContent = t("โหลดเพลย์ลิสต์ไม่สำเร็จ","Failed to load playlist");
+      const lastUrl=localStorage.getItem("lastUrl");
+      let idx=0;
+      if(lastUrl){ const found=viewChannels.findIndex(c=>c.url===lastUrl); if(found>=0) idx=found; }
+      playIndex(idx,false);
+    }catch(err){
+      els.now.textContent=t("โหลดเพลย์ลิสต์ไม่สำเร็จ","Failed to load playlist");
       console.error(err);
     }
   }
 
   function updateLangUI(){
-    els.langBtn.textContent = lang === "th" ? "ไทย" : "EN";
-    els.themeBtn.textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
-    els.search.placeholder = t("ค้นหาช่อง...","Search channel...");
-    els.searchLabel.textContent = t("ค้นหาช่อง","Search");
-    els.groupLabel.textContent = t("กลุ่มช่อง","Channel group");
-    // อัปเดต count/now/bufInfo ตามภาษา (รีเฟรชค่าอีกครั้ง)
-    els.count.textContent = t(`${viewChannels.length} ช่อง`, `${viewChannels.length} channels`);
-    const txt = els.now.textContent;
-    if (txt && txt.includes(": ")){
-      const name = txt.split(": ").slice(1).join(": ");
-      els.now.textContent = t("กำลังเล่น: ","Now playing: ") + name;
+    els.langBtn.textContent=lang==="th"?"ไทย":"EN";
+    els.themeBtn.textContent=document.body.classList.contains("dark")?"🌙":"☀️";
+    els.search.placeholder=t("ค้นหาช่อง...","Search channel...");
+    els.searchLabel.textContent=t("ค้นหาช่อง","Search");
+    els.groupLabel.textContent=t("กลุ่มช่อง","Channel group");
+    els.count.textContent=t(`${viewChannels.length} ช่อง`, `${viewChannels.length} channels`);
+    const txt=els.now.textContent;
+    if(txt && txt.includes(": ")){
+      const name=txt.split(": ").slice(1).join(": ");
+      els.now.textContent=t("กำลังเล่น: ","Now playing: ") + name;
     }
     updateBufferBar();
   }
 
-  // ====== Events ======
-  els.search.addEventListener("input", ()=>{
+  els.search.addEventListener("input",()=>{
     applyFilter();
-    // หากช่องที่กำลังเล่นถูกกรองออก ให้เล่นช่องแรกของรายการที่กรอง
-    const cur = viewChannels[currentIndex];
-    if (!cur){
-      if (viewChannels.length) playIndex(0, false);
-    } else {
-      // sync active row
-      renderList();
-    }
+    if(!viewChannels[currentIndex]){ if(viewChannels.length) playIndex(0,false); }else{ renderList(); }
   });
 
-  els.group.addEventListener("change", ()=>{
+  els.group.addEventListener("change",()=>{
     applyFilter();
-    if (!viewChannels[currentIndex] && viewChannels.length){
-      playIndex(0, false);
-    }
+    if(!viewChannels[currentIndex] && viewChannels.length){ playIndex(0,false); }
   });
 
-  els.langBtn.addEventListener("click", ()=>{
-    lang = (lang === "th") ? "en" : "th";
-    localStorage.setItem("lang", lang);
+  els.langBtn.addEventListener("click",()=>{
+    lang=(lang==="th")?"en":"th";
+    localStorage.setItem("lang",lang);
     updateLangUI();
     renderList();
-    renderGroups(); // รีเรนเดอร์ชื่อกลุ่ม "อื่นๆ/Others" ใน dropdown หากจำเป็น
+    renderGroups();
   });
 
-  els.themeBtn.addEventListener("click", ()=>{
-    const toDark = !document.body.classList.contains("dark");
-    document.body.classList.toggle("dark", toDark);
-    document.body.classList.toggle("light", !toDark);
-    localStorage.setItem("theme", toDark ? "dark" : "light");
+  els.themeBtn.addEventListener("click",()=>{
+    const toDark=!document.body.classList.contains("dark");
+    document.body.classList.toggle("dark",toDark);
+    document.body.classList.toggle("light",!toDark);
+    localStorage.setItem("theme",toDark?"dark":"light");
     updateLangUI();
   });
 
-  // ====== Start ======
   loadPlaylist();
+
+  // ====== Donate Card Script ======
+  const toggleBtn = document.getElementById('donate-toggle');
+  const card = document.getElementById('donate-card');
+
+  function toggleDonate(show=true){
+    if(show){
+      card.style.opacity="1";
+      card.style.transform="translateY(0)";
+      card.style.pointerEvents="auto";
+      toggleBtn.textContent="❌ Close";
+    }else{
+      card.style.opacity="0";
+      card.style.transform="translateY(30px)";
+      card.style.pointerEvents="none";
+      toggleBtn.textContent="💝 Donate";
+    }
+  }
+
+  toggleBtn.onclick=function(){
+    if(card.style.opacity==="0" || card.style.opacity===""){ toggleDonate(true); }else{ toggleDonate(false); }
+  };
   </script>
 </body>
 </html>
