@@ -55,6 +55,7 @@
     }
     @media (prefers-reduced-motion: reduce){ #animated-bg .orb{ animation:none; } }
 
+    /* ===== Header ===== */
     header{
       position:sticky; top:0; z-index:10;
       display:flex; align-items:center; gap:.5rem;
@@ -101,7 +102,7 @@
     .buffer-bar{ height:100%; width:0%; background:var(--buffer); transition:width .2s; }
     .grid-gap{ display:grid; gap:.6rem; }
 
-    /* ====== Donate Card ====== */
+    /* ===== Donate Card ====== */
     #donate-toggle{
       position:fixed; bottom:20px; right:20px;
       background:#007bff; color:white; padding:10px 15px;
@@ -119,7 +120,7 @@
     #donate-card h3, #donate-card h4{margin-bottom:10px;}
     #donate-card img{margin-bottom:10px;}
 
-    /* ====== Modern Scrollbar ===== */
+    /* ===== Modern Scrollbar ===== */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb {
@@ -141,8 +142,8 @@
     }
     header button#powerBtn.blink { animation: blink-bounce 0.5s ease-in-out; }
 
-    /* ====== Power Save Background ===== */
-    body.power-save #animated-bg .orb { animation:none !important; opacity:0.2 !important; }
+    /* ====== Power Save ===== */
+    body.power-save #animated-bg { display:none; }
     body.power-save video { filter: brightness(0.88); }
   </style>
 </head>
@@ -293,7 +294,7 @@
   function playIndex(i,userSelect=false){
     if(!viewChannels[i]) return; currentIndex=i;
     const ch=viewChannels[i]; localStorage.setItem("lastUrl",ch.url);
-    els.now.textContent=t("กำลังเล่น: ","Now playing: ")+ch.title;
+    els.now.textContent=t("กำลังเล่น: ","กำลังเล่น: ")+ch.title;
     destroyHls();
     if(Hls.isSupported()){
       hls=new Hls({maxBufferLength:60, maxBufferSize:60*1024*1024, maxBufferHole:2, liveSyncDuration:30, fragLoadingMaxRetry:10, manifestLoadingMaxRetry:5, levelLoadingMaxRetry:5});
