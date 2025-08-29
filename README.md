@@ -32,7 +32,7 @@
 
 ---
 
-M3U : https://powershell-lv2.github.io/tvbox.m3u
+M3U : https://Tvonhub.github.io/tvbox.m3u
 
 ## 💬 ติดต่อเรา
 
