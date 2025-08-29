@@ -36,7 +36,7 @@ M3U : https://Tvonhub.github.io/tvbox.m3u
 
 ## 💬 ติดต่อเรา
 
-- 🌐 **เว็บไซต์:** https://powershell-lv2.github.io/
+- 🌐 **เว็บไซต์:** https://Tvonhub.github.io/
 - 📧 **อีเมล:** chetbodins@gmail.com 
 - 💬 **Facebook:** https://www.facebook.com/Mui21.93
 
