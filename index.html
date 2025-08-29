@@ -524,13 +524,12 @@ chatInput.addEventListener("keypress", e => {
   }
 });
 
-// Prompt for name if not set
+// กำหนดชื่อ guest แบบสุ่ม
 if(!localStorage.getItem("chatName")){
-  const name = prompt("ตั้งชื่อผู้ใช้สำหรับแชท:", "ผู้ใช้");
-  if(name) localStorage.setItem("chatName", name);
+  const guestName = "guest" + Math.floor(Math.random() * 10000);
+  localStorage.setItem("chatName", guestName);
 }
 
   </script>
 </body>
 </html>
-
