@@ -1,6 +1,3 @@
-# อนุญาตให้ทุก Search Engine สแกนเว็บไซต์
 User-agent: *
 Allow: /
-
-# บอกตำแหน่ง Sitemap
 Sitemap: https://tvonhub.github.io/sitemap.xml
