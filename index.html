@@ -363,7 +363,7 @@
   const card = document.getElementById('donate-card');
   function toggleDonate(show=true){
     if(show){ card.style.opacity="1"; card.style.transform="translateY(0)"; card.style.pointerEvents="auto"; toggleBtn.textContent="❌ Close"; }
-    else{ card.style.opacity="0"; card.style.transform="translateY(30px)"; card.style.pointerEvents="none"; toggleBtn.textContent="💝 Donate"; }
+    else{ card.style.opacity="0"; card.style.transform="translateY(30px)"; card.style.pointerEvents="none"; toggleBtn.textContent="💝 สนุบสนุน"; }
   }
   toggleBtn.onclick=function(){ if(card.style.opacity==="0"||card.style.opacity===""){ toggleDonate(true); }else{ toggleDonate(false); } };
 
