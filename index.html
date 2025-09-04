@@ -149,15 +149,17 @@
   pointer-events:none;
   transition: all 0.3s ease;  /* ลดเวลา animation ให้ลื่น */
   touch-action: manipulation;  /* ช่วยให้มือถือ touch ได้ */
+  opacity:0;
+  transform:translateY(30px);
+  pointer-events:none;
+  transition: all 0.4s ease;  /* ปรับเหมือน donate-card */
 }
-
 /* ปรับให้ scroll ของ chat ทำงานบนมือถือ */
 #chat-messages{
   -webkit-overflow-scrolling: touch; /* scroll ลื่นบน iOS */
 }
 
 #chat-card h3{margin-bottom:10px;}
-
 
     /* ===== Donate Card ====== */
     #donate-toggle{
@@ -278,7 +280,7 @@ body.dark #chat-messages {
 <!-- Chat card -->
 <div id="chat-card">
   <div onclick="toggleChat(false)" style="position:absolute; top:8px; right:12px; cursor:pointer; font-size:18px; color:#888;">✖</div>
-  <h3>💬 แชทสด</h3>
+  <h3>💬 แชทสด <span id="onlineCount" style="font-size:14px; color:#28a745;">(0 ออนไลน์)</span></h3>
   <div id="chat-messages" style="height:200px; overflow-y:auto; border:1px solid #ccc; padding:8px; margin-bottom:10px; border-radius:8px; background:#f9f9f9;"></div>
   <input id="chat-input" type="text" placeholder="พิมพ์ข้อความ..." style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;" />
 </div>
@@ -493,6 +495,13 @@ connectedRef.on("value", snap => {
     myPresRef.set({ at: firebase.database.ServerValue.TIMESTAMP });
   }
 });
+// Online count
+const onlineCountEl = document.getElementById("onlineCount");
+presListRef.on("value", snap => {
+  const count = snap.numChildren();
+  onlineCountEl.textContent = `(${count} ออนไลน์)`;
+});
+
 
 // Chat toggle
 const chatToggleBtn = document.getElementById('chat-toggle');
@@ -505,16 +514,15 @@ function toggleChat(show=true){
     chatCard.style.opacity="1";
     chatCard.style.transform="translateY(0)";
     chatCard.style.pointerEvents="auto";
-    chatCard.style.display="block";   // เพิ่มบรรทัดนี้
     chatToggleBtn.textContent="❌ ปิดแชท";
   }else{
     chatCard.style.opacity="0";
     chatCard.style.transform="translateY(30px)";
     chatCard.style.pointerEvents="none";
-    chatCard.style.display="none";    // เพิ่มบรรทัดนี้
     chatToggleBtn.textContent="💬 แชท";
   }
 }
+
 
 chatToggleBtn.onclick = () => {
   if(chatCard.style.opacity==="0" || chatCard.style.opacity===""){
