@@ -202,6 +202,26 @@
     /* ====== Power Save ===== */
     body.power-save #animated-bg { display:none; }
     body.power-save video { filter: brightness(0.88); }
+
+body.light #chat-messages {
+  color: #000000;
+  background: #f9f9f9;
+}
+
+body.dark #chat-messages {
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+#chat-card h3,
+#donate-card h3,
+#donate-card h4 {
+  color: #000000 !important;  /* กำหนดเป็นสีดำชัดเจน */
+}
+/* ===== ทำให้ข้อความเลขบัญชี/PromptPay เป็นสีดำ ===== */
+#donate-card p {
+  color: #000000 !important;
+}
+
   </style>
 </head>
 <body class="light">
